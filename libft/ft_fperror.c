@@ -14,7 +14,7 @@
 #include <errno.h>
 #include "ft_printf.h"
 
-void	fperror(char *fmt, ...)
+void	*fperror(char *fmt, ...)
 {
 	va_list	ap;
 
@@ -22,4 +22,5 @@ void	fperror(char *fmt, ...)
 	ft_vprintf(fmt, &ap);
 	perror(" ");
 	va_end(ap);
+	return (NULL);
 }

@@ -23,3 +23,23 @@ void	*ft_memset(void *s, int c, size_t n)
 		ptr[--n] = cc;
 	return (s);
 }
+/*
+void	*ft_memset(void *s, int c, size_t n)
+{
+	unsigned char	*cp;
+	size_t		*sp;
+
+	sp = (size_t *)s;
+	while (n > sizeof(size_t))
+	{
+		*(sp++) = (size_t)sc;
+		n -= sizeof(size_t);
+	}
+	cp = (unsigned char *)sp;
+	while (n)
+	{
+		*(cp++) = (unsigned char)c;
+		n--;
+	}
+	return (s);
+}*/

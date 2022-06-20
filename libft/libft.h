@@ -115,9 +115,9 @@ void	ft_putstr_fd(char const *s, int fd);
 void	ft_putendl_fd(char const *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 
-int		ft_printf(const char *fmt, ...);
-int		ft_vprintf(const char *fmt, va_list *ap);
-void	fperror(char *fmt, ...);
+int	ft_printf(const char *fmt, ...);
+int	ft_vprintf(const char *fmt, va_list *ap);
+void	*fperror(char *fmt, ...);
 
 typedef struct s_list
 {
