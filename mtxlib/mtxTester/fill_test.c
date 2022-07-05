@@ -14,6 +14,7 @@ int	main()
 	printf("fill test : Post creation matrix :\n");
 	mtx_print(mtx);
 	mtx_display_info(mtx);
+
 	mtx_fill(mtx, &value);
 	printf("fill test : Post fill matrix :\n");
 	mtx_print(mtx);
@@ -22,7 +23,7 @@ int	main()
 	printf("\nNEW array [FLOAT] :\n");
 	valuef = M_PI;
 	printf("valuef : %f\n", valuef);
-	mtx = mtx_identity(10, DTYPE_F);
+	mtx = mtx_identity(10, NULL, DTYPE_F);
 	mtx_print(mtx);
 	mtx_display_info(mtx);
 	printf("fill with PI !!!\n");

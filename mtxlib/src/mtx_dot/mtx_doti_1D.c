@@ -40,11 +40,14 @@ int	_mtx_doti_1x4_1x4(t_mtx *m1, t_mtx *m2)
 int	mtx_doti_1D_1D(t_mtx *m1, t_mtx *m2)
 {
 	if (!mtx_isvalid_broadcast_dot(m1, m2))
+	{	
+		MTX_ERROR("invalid broadcast");
 		return (0);
+	}
 	else if (!((m1->shape[0] == 1) && (m2->shape[0] == 1))
 		|| (m1->dtype != DTYPE_I))
 	{
-		fperror("mtx_doti_1D_1D : mtx not 1D or not DTYPE_I");
+		MTX_ERROR("mtx not 1D or not DTYPE_I");
 		return (0);
 	}
 

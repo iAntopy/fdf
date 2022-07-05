@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:00:42 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/06/15 19:00:11 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/06/30 21:06:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "mtxlib.h"
@@ -14,8 +14,8 @@
 void	_mtx_dot_nxn_ii(t_mtx *a, t_mtx *b, t_mtx *out)
 {
 	int	i;
-	int j;
-	int k;
+	int	j;
+	int	k;
 	int	s;
 
 	i = -1;
@@ -27,8 +27,8 @@ void	_mtx_dot_nxn_ii(t_mtx *a, t_mtx *b, t_mtx *out)
 			s = 0;
 			j = -1;
 			while (++j < a->shape[1])
-				s += *(int *)_mtx_idx(a, i, j) * *(int *)_mtx_idx(b, j, k);
-			*(int *)_mtx_idx(out, i, k) = s;
+				s += *(int *)_mtx_idx(a->arr, a->strides, i, j) * *(int *)_mtx_idx(b->arr, b->strides, j, k);
+			*(int *)_mtx_idx(out->arr, out->strides, i, k) = s;
 		}
 	}
 }
@@ -49,8 +49,8 @@ void	_mtx_dot_nxn_ff(t_mtx *a, t_mtx *b, t_mtx *out)
 			s = 0;
 			j = -1;
 			while (++j < a->shape[1])
-				s += *(float *)_mtx_idx(a, i, j) * *(float *)_mtx_idx(b, j, k);
-			*(float *)_mtx_idx(out, i, k) = s;
+				s += *(float *)_mtx_idx(a->arr, a->strides, i, j) * *(float *)_mtx_idx(b->arr, b->strides, j, k);
+			*(float *)_mtx_idx(out->arr, out->strides, i, k) = s;
 		}
 	}
 }
@@ -71,8 +71,8 @@ void	_mtx_dot_nxn_fi(t_mtx *a, t_mtx *b, t_mtx *out)
 			s = 0;
 			j = -1;
 			while (++j < a->shape[1])
-				s += *(float *)_mtx_idx(a, i, j) * *(int *)_mtx_idx(b, j, k);
-			*(float *)_mtx_idx(out, i, k) = s;
+				s += *(float *)_mtx_idx(a->arr, a->strides, i, j) * *(int *)_mtx_idx(b->arr, b->strides, j, k);
+			*(float *)_mtx_idx(out->arr, out->strides, i, k) = s;
 		}
 	}
 }
@@ -93,8 +93,8 @@ void	_mtx_dot_nxn_if(t_mtx *a, t_mtx *b, t_mtx *out)
 			s = 0;
 			j = -1;
 			while (++j < a->shape[1])
-				s += *(int *)_mtx_idx(a, i, j) * *(float *)_mtx_idx(b, j, k);
-			*(float *)_mtx_idx(out, i, k) = s;
+				s += *(int *)_mtx_idx(a->arr, a->strides, i, j) * *(float *)_mtx_idx(b->arr, b->strides, j, k);
+			*(float *)_mtx_idx(out->arr, out->strides, i, k) = s;
 		}
 	}
 }
@@ -110,11 +110,11 @@ t_mtx	*mtx_dot(t_mtx *a, t_mtx *b, t_mtx **out)
 	mtx_print(b);
 	if ((out && !mtx_isvalid_broadcast_to_dot(a, b, *out))
 		|| (!out && !mtx_isvalid_broadcast_dot(a, b)))
-		return (NULL);
+		return (MTX_ERROR("invalid broadcast"));
 	if (!out)
 		ret = mtx_create_empty(a->shape[0], b->shape[1], mtx_dtype_out(a, b));
 	else if (*out == a || *out == b)
-		return (fperror("mtx_dot : out mtx == a or b input. TODO: allow == a"));
+		return (MTX_ERROR("out mtx == a or b input. TODO: allow == a"));
 	else
 		ret = *out;
 	printf("mtx_dot : ret matrix collected (%p)\n", ret);

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 23:55:34 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/06/19 01:27:24 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/06/26 01:17:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,33 @@ static void	__quat_init_rot_mtx(float r[4][4], float q[4], float s)
 
 void	_quat_update_data(t_quat *q, float vect[3], float ang)
 {
-	float	s;
+	float	x;
+	float	y;
+	float	z;
 	float	mag;
 	float	sin_ang;
 
-	s = ang / 2;
-	sin_ang = sinf(s);
-	mag = sqrtf(x*x + y*y + z*z);
+	x = vect[0];
+	y = vect[1];
+	z = vect[2];
+	sin_ang = sinf(ang / 2);
+	mag = sqrtf(x * x + y * y + z * z);
 	q->uv[0] = 0;
-	q->uv[1] = (vect[0] / mag);
-	q->uv[2] = (vect[1] / mag);
-	q->uv[3] = (vect[2] / mag);
-	q->q[0] = cos(s);
+	q->uv[1] = (x / mag);
+	q->uv[2] = (y / mag);
+	q->uv[3] = (z / mag);
+	q->q[0] = cos(ang / 2);
 	q->q[1] = q->uv[1] * sin_ang;
 	q->q[2] = q->uv[2] * sin_ang;
 	q->q[3] = q->uv[3] * sin_ang;
-	__quat_init_rot_mtx(q->rot_mtx, q, q->q[0]);
+	__quat_init_rot_mtx(q->rot_mtx, q->q, q->q[0]);
 }
 
-t_quat	*quat_create(float ang, float x, float y, foat z)
+t_quat	*quat_create(float ang, float x, float y, float z)
 {
 	t_quat	*q;
 
-	if (!malloc_free_p(sizeof(t_quat), (void **)&q)
+	if (!malloc_free_p(sizeof(t_quat), (void **)&q))
 		return (fperror("%s : malloc error", __FUNCTION__));
 	q->uv[1] = x;
 	q->uv[2] = y;

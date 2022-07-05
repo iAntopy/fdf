@@ -23,6 +23,7 @@ void	_mtx_dotf_4x4_4x4(float *a, float *b, float *out)
 //	printf("dot product complet!\n");
 }
 
+
 // Not usable with view output
 void	_mtx_dotf_nx4_4x4(int n, float *a, float *b, float *out)
 {

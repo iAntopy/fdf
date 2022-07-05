@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 00:53:46 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/06/15 18:52:25 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/06/26 00:26:46 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "mtxlib.h"
@@ -45,26 +45,28 @@ static int	__reset_j(int *j)
 
 static void	__mtx_fill_view(t_mtx *m, void *value, size_t dsize)
 {
-	int	r;
-	int	c;
-	int	i;
-	int	j;
+	int		r;
+	int		c;
+	int		i;
+	int		j;
+	void	*arr;
 
 	r = m->shape[0];
 	c = m->shape[1];
 	i = -1;
+	arr = _mtx_arr(m);
 	if (dsize == sizeof(U_INT))
 		while (++i < r && __reset_j(&j))
 			while (++j < c)
-				*(U_INT *)_mtx_idx(m, i, j) = *(U_INT *)value;
+				*(U_INT *)_mtx_idx(arr, m->strides, i, j) = *(U_INT *)value;
 	else if (dsize == sizeof(size_t))
 		while (++i < r && __reset_j(&j))
 			while (++j < c)
-				*(size_t *)_mtx_idx(m, i, j) = *(size_t *)value;
+				*(size_t *)_mtx_idx(arr, m->strides, i, j) = *(size_t *)value;
 	else if (dsize == sizeof(U_CHAR))
 		while (++i < r && __reset_j(&j))
 			while (++j < c)
-				*(U_CHAR *)_mtx_idx(m, i, j) = *(U_CHAR *)value;
+				*(U_CHAR *)_mtx_idx(arr, m->strides, i, j) = *(U_CHAR *)value;
 }
 
 //fills matrix with the value pointed by void *. The size of the 
@@ -73,7 +75,7 @@ void	mtx_fill(t_mtx *mtx, void *value)
 {
 	size_t	dsize;
 
-	dsize = get_dsize(mtx->dtype);
+	dsize = mtx_get_dsize(mtx->dtype);
 	if (mtx->is_view)
 		__mtx_fill_view(mtx, value, dsize);
 	else

@@ -1,7 +1,6 @@
 SRC_DIR	= src
 
-SRCS	= $(wildcard $(SRC_DIR)/*/*.c)# mtx_create/* mtx_ufuncs/* mtx_display/* mtx_mem/* miniLibft/*
-
+SRCS	= $(wildcard $(SRC_DIR)/*/*.c) $(wildcard $(SRC_DIR)/mtx_math/*opps/*.c) $(wildcard $(SRC_DIR)/mtx_ufuncs/*copps/*.c)
 
 OBJS	= $(SRCS:.c=.o)
 

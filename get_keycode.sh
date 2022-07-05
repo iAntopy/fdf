@@ -2,16 +2,16 @@
 # and the script will try to find it in the KC_REFS file.
 # Used as a guide to find MACRO defines for relevent keycodes.
 
-KC_REFS="keycodesdef.h"
+KC_REFS="includes/keycodesdef.h"
 
-if test ! -f "$KC_REFS"
+if test ! -f $KC_REFS
 	then
 	echo "Keycodes list file NOT PRESENT in directory."
 	exit 0
 fi
 
 echo "((===================<| MATCHING CODES FOUND |>=====================))"
-grep "^#define" keysymdef.h | grep --ignore-case $1 |
+grep "^#define" $KC_REFS | grep --ignore-case $1 |
 awk -Wposix -F' ' 'BEGIN {printf("((\t%-30s| %-12s | %-12s ))\n((__________________________________________________________________))\n", "  NAME", "  HEX CODE", "  DEC CODE")} {printf("((\t%-30s|  %-12s|  %-12d))\n", $2, $3, $3)}'
 
 echo "((==================================================================))\n\n"
