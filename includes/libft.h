@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:20:53 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/14 16:39:12 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/07/05 02:00:20 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,7 @@ void	ft_putbin(const void *addr, size_t n);
 
 void	ft_swap_i(int *a, int *b);
 void	ft_swap_f(float *a, float *b);
-int		ft_clamp(int n, int min, int max);
-void	ft_memclear(void *dest, size_t size);
+int	ft_clamp(int n, int min, int max);
 
 int	ft_printf(const char *fmt, ...);
 int	ft_vprintf(const char *fmt, va_list *ap);

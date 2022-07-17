@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 00:32:39 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/03 20:49:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/07/07 16:13:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # include "mtx_arithmetic.h"	//AUTO_GENERATED
 # include "mtx_cumul_ufuncs.h"	//AUTO GENERATED
 # include "mtx_linalg.h"
+# include "mtx_quaternion.h"
 
 #endif
 /*

@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 21:22:27 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/04 18:51:10 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/07/12 18:16:23 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	mtx_print_i(t_mtx *mtx)
 	int		j;
 
 	marr = _mtx_arr(mtx);
-	printf("printing mtx :\n");
+//	printf("printing mtx :\n");
 	if (!mtx || !(marr) || mtx->dtype != DTYPE_I)
 		return ;
 	i = -1;
@@ -56,7 +56,10 @@ void	mtx_print_f(t_mtx *mtx)
 	int		j;
 
 	marr = _mtx_arr(mtx);
-	if (!mtx || !(mtx->arr) || mtx->dtype != DTYPE_F)
+//	printf("Printing mtx at ptr : %p\n", mtx);
+//	printf("mtx present : %d, mtx->arr pres: %d, mtx->dtype == float : %d\n", !!mtx, !!(marr), mtx->dtype == DTYPE_F);
+//	mtx_display_info(mtx);
+	if (!mtx || !(marr) || mtx->dtype != DTYPE_F)
 		return ;
 	i = -1;
 	if (mtx->ndims == 1)

@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mtx_perror.c                                       :+:      :+:    :+:   */
+/*   __function__macro_test.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/30 20:50:10 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/12 04:37:35 by iamongeo         ###   ########.fr       */
+/*   Created: 2022/06/18 06:40:07 by iamongeo          #+#    #+#             */
+/*   Updated: 2022/06/18 06:42:10 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mtxlib.h"
+#include <stdio.h>
 
-void	*mtx_err(char *origin, char *err)
+void	WOW_INCROYABLE(char ass)
 {
-	fprintf(stderr, RED_BC"[=> MTX ERROR : %s : %s <=]\n"WHITE_C,
-		origin, err);
-	return (NULL);
+	printf("Vous êtes dans la fonction nommer : %s\n", __FUNCTION__);
 }
 
-void	*mtx_e_clr(char *origin, char *err, t_mtx **mtx)
+int	main()
 {
-	mtx_err(origin, err);
-	mtx_clear(mtx);
-	return (NULL);
+	WOW_INCROYABLE('a');
+	return (0);
 }

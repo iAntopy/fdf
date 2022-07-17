@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 03:33:18 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/06/30 18:43:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/07/12 15:31:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static t_mtx	*route_opp(t_mtx *a, t_mtx *b, t_mtx *out, int specs[2])
 	if (act_opp)
 		act_opp(a, b, out);
 	else
-		return (fperror("%s: mismatch shapes ", __FUNCTION__));
+		return (MTX_ERROR("mismatch shapes "));
 	return (out);
 }
 
@@ -74,13 +74,13 @@ t_mtx	*mtx_pow(t_mtx *a, t_mtx *b, t_mtx *out)
 	ret = out;
 	printf("mtx_pow entered\n");
 	if (!(a || b) || !mtx_are_same_type(a, b, ret))
-		return (fperror("%s: missing inputs or mismatch dtypes", __FUNCTION__));
+		return (MTX_ERROR("missing inputs or mismatch dtypes"));
 	same_shape = mtx_are_same_shape(a, b);
 	specs[0] = same_shape;
 	printf("same_shape : %d\n", same_shape);
 	put_biggest_first(&a, &b, specs);
 	if (!ret && !mtx_dup_empty(a, &ret, a->dtype))
-		return (fperror("%s: malloc error", __FUNCTION__));
+		return (MTX_ERROR("malloc error"));
 	printf("ret is valid\n");
 	if (same_shape && (a->dtype == DTYPE_F))
 		_mtx_powf_mtx(a, b, ret);

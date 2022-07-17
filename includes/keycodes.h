@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mtx_perror.c                                       :+:      :+:    :+:   */
+/*   keycodes.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/30 20:50:10 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/12 04:37:35 by iamongeo         ###   ########.fr       */
+/*   Created: 2022/07/05 19:40:32 by iamongeo          #+#    #+#             */
+/*   Updated: 2022/07/05 19:46:04 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mtxlib.h"
+// Unified keycode macro definitions for unix (X server) and macos
+// Include this header in code to get access.
 
-void	*mtx_err(char *origin, char *err)
-{
-	fprintf(stderr, RED_BC"[=> MTX ERROR : %s : %s <=]\n"WHITE_C,
-		origin, err);
-	return (NULL);
-}
-
-void	*mtx_e_clr(char *origin, char *err, t_mtx **mtx)
-{
-	mtx_err(origin, err);
-	mtx_clear(mtx);
-	return (NULL);
-}
+#ifdef __APPLE__
+	#include "keycodes_macos.h"
+#elif __unix__
+	#include "keycodes_xserv.h"
+#endif

@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 18:18:46 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/03 20:10:32 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/07/15 16:51:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ size_t	mtx_sizeof_array(t_mtx *mtx);
 void	*mtx_malloc_swap(t_mtx *mtx);
 int		mtx_swap_arrays(t_mtx *mtx);
 void	_mtx_swap_arrays(t_mtx *mtx);
+t_mtx	*__mtx_copy_view_swap_to_array_4bytes(t_mtx *view);
 
 // INDEXING FUNCTIONS
 void	*mtx_index(t_mtx *mtx, int row, int col);
@@ -77,7 +78,13 @@ int		mtx_init_as_array(t_mtx *mtx, void *arr, int rows, int cols);
 t_mtx	*mtx_transpose(t_mtx *mtx);
 t_mtx	*mtx_reshape(t_mtx *mtx, int rows, int cols);
 
-void	mtx_fill(t_mtx *mtx, void *value);
+t_mtx	*mtx_fill(t_mtx *mtx, void *value);
+t_mtx	*__mtx_fill_zeros(t_mtx *mtx);
+t_mtx	*_mtx_fill_zeros(t_mtx *mtx);
+t_mtx	*__mtx_fill_int(t_mtx *mtx, int value); // DOES NOT WORK WITH VIEWS
+t_mtx	*__mtx_fill_float(t_mtx *mtx, float value); // DOES NOT WORK WITH VIEWS
+t_mtx	*_mtx_fill_int(t_mtx *mtx, int value); // WORKS WITH VIEWS
+t_mtx	*_mtx_fill_float(t_mtx *mtx, float value); // WORKS WITH VIEWS
 void	mtx_convert_arr_type(t_mtx *new, t_mtx *old);
 int		mtx_dtype_out(t_mtx *m1, t_mtx *m2);
 
@@ -85,13 +92,20 @@ t_mtx	*mtx_dup_struct(t_mtx *mtx, t_mtx **out);
 t_mtx	*mtx_dup_empty(t_mtx *mtx, t_mtx **out, int dtype);
 t_mtx	*mtx_copy(t_mtx *mtx);//, int dtype);
 
-t_mtx	*mtx_slice_view(t_mtx *mtx, const int slice[4]);
-t_mtx	*mtx_view(t_mtx *mtx, t_mtx	*out);
-t_mtx	*mtx_select_row(t_mtx *mtx, int row);
-t_mtx	*mtx_select_col(t_mtx *mtx, int col);
+t_mtx	*mtx_slice_view(t_mtx *mtx, int slice[4], t_mtx *out);
+t_mtx	*mtx_select_row(t_mtx *mtx, int row, t_mtx *out);
+t_mtx	*mtx_select_col(t_mtx *mtx, int col, t_mtx *out);
+t_mtx	*mtx_select_row_range(t_mtx *mtx, int start, int end, t_mtx *out);
+t_mtx	*mtx_select_col_range(t_mtx *mtx, int start, int end, t_mtx *out);
+//t_mtx	*mtx_view(t_mtx *mtx, t_mtx	*out);
+
+void	_mtx_fill_identity_i(t_mtx *arr);
+void	_mtx_fill_identity_f(t_mtx *arr);
+void	__mtx_fill_identity_i(int n, int *arr);
+void	__mtx_fill_identity_f(int n, float *arr);
 
 // ERROR HANDLING
-t_mtx	*mtx_err(char *origin, char *err);
-t_mtx	*mtx_e_clr(char *origin, char *err, t_mtx **mtx);
+void	*mtx_err(char *origin, char *err);
+void	*mtx_e_clr(char *origin, char *err, t_mtx **mtx);
 
 #endif

@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mtx_perror.c                                       :+:      :+:    :+:   */
+/*   ft_memclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/30 20:50:10 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/12 04:37:35 by iamongeo         ###   ########.fr       */
+/*   Created: 2022/07/14 16:32:36 by iamongeo          #+#    #+#             */
+/*   Updated: 2022/07/14 16:40:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mtxlib.h"
+#include "libft.h"
 
-void	*mtx_err(char *origin, char *err)
+// clears mem to zero at dest for size bytes.
+void	ft_memclear(void *dest, size_t size)
 {
-	fprintf(stderr, RED_BC"[=> MTX ERROR : %s : %s <=]\n"WHITE_C,
-		origin, err);
-	return (NULL);
-}
+	size_t			*p;
+	unsigned char	*c;
 
-void	*mtx_e_clr(char *origin, char *err, t_mtx **mtx)
-{
-	mtx_err(origin, err);
-	mtx_clear(mtx);
-	return (NULL);
+	if (!dest || !size)
+		return ;
+	p = (size_t *)dest;
+	c = (unsigned char *)dest;
+	while (size >= sizeof(size_t))
+	{
+		*(p++) = 0;
+		size -= sizeof(size_t);
+	}
+	while (size)
+	{
+		*(c++) = 0;
+		size -= sizeof(unsigned char);
+	}
 }

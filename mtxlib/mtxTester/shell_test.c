@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mtx_perror.c                                       :+:      :+:    :+:   */
+/*   shell_test.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/30 20:50:10 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/12 04:37:35 by iamongeo         ###   ########.fr       */
+/*   Created: 2022/07/07 15:24:14 by iamongeo          #+#    #+#             */
+/*   Updated: 2022/07/07 15:44:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mtxlib.h"
 
-void	*mtx_err(char *origin, char *err)
+int	main()
 {
-	fprintf(stderr, RED_BC"[=> MTX ERROR : %s : %s <=]\n"WHITE_C,
-		origin, err);
-	return (NULL);
-}
+	t_mtx	mtx;
+	float	arr[16];
+	
+	mtx.arr = arr;
+	mtx_shell(&mtx, 4, 4, DTYPE_F);
+	mtx_print(&mtx);
 
-void	*mtx_e_clr(char *origin, char *err, t_mtx **mtx)
-{
-	mtx_err(origin, err);
-	mtx_clear(mtx);
-	return (NULL);
+	__mtx_rotation_matrix_4x4(M_PI / 2, 0, 0, arr);
+	mtx_print(&mtx);
+	return (0);
 }

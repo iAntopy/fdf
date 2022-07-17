@@ -8,3 +8,5 @@
 *.pdf
 legacy/
 *template/
+py*
+*.py
