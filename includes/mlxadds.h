@@ -6,14 +6,13 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 17:32:17 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/14 16:51:02 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/07/05 04:00:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MLXADDS_H
 # define MLXADDS_H
 
-# include "keycodes.h"
 # include <stdlib.h>
 
 enum	e_event_codes
@@ -43,8 +42,8 @@ typedef struct	s_mlx_data
 	void	*win;
 	int	width;
 	int	height;
-	t_img	*screen_buff;	// screen_buff and off_buff ptrs will be swapped between frames.
-	t_img	*off_buff;		// these are buff1 and buff2 ptrs. DO NOT FREE.
+	t_img	*screen_buff;
+	t_img	*off_buff;
 	t_img	buff1;
 	t_img	buff2;
 }	t_mlx;

@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 16:20:53 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/05 02:00:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/07/18 19:21:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,31 +31,18 @@
 # define CYAN_BC	"\033[1;36m"
 # define WHITE_BC	"\033[1;37m"
 
-# define BIN_BASE "01"
 //# define HEX_BASE_LOWERCASE "0123456789abcdef"
 //# define HEX_BASE_UPPERCASE "0123456789ABCDEF"
-//
 // homemade limits
-/*
-# define CHAR_MAX 127
-# define CHAR_MIN -128
-# define SHRT_MAX 32767
-# define SHRT_MIN -32768
-# define USHRT_MAX 65535
-# define INT_MAX 2147483647
-# define INT_MIN -2147483648
-# define LONG_MAX 2147483647
-# define LONG_MIN -2147483648
-# define ULONG_MAX 4294967295U
-# define LLONG_MAX 9223372036854775807LL
-# define LLONG_MIN -9223372036854775808LL
-# define ULLONG_MAX 18446744073709551615ULL
-# define SIZE_MAX 18446744073709551615ULL
-*/
+
 # include <limits.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdarg.h>
+# include <stdio.h>
+
 # include "ft_printf.h"
+# include "get_next_line.h"
 
 void	*ft_memset(void *s, int c, size_t n);
 void	ft_bzero(void *s, size_t n);
@@ -124,10 +111,15 @@ int	ft_clamp(int n, int min, int max);
 
 int	ft_printf(const char *fmt, ...);
 int	ft_vprintf(const char *fmt, va_list *ap);
-void	*fperror(char *fmt, ...);
-ssize_t	ft_timedelta_usec(char *note);
+void	fperror(char *fmt, ...);
+ssize_t	ft_deltatime_usec(char *note);
 float	ft_random(void);
 int	ft_randint(int min, int range);
+
+int	malloc_free_p(size_t size, void **ptr);
+void	*malloc_free(size_t size, void **ptr);
+
+char	*get_next_line(int fd);
 
 typedef struct s_list
 {
@@ -139,7 +131,8 @@ t_list	*ft_lstnew(void *content);
 t_list	*ft_lstcreate(void *content, size_t size_of);
 void	ft_lstinsert(t_list **lst, unsigned int index, t_list *new);
 void	ft_lstadd_front(t_list **lst, t_list *new);
-int		ft_lstsize(t_list *lst);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+int	ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	*ft_lstpop(t_list **lst, unsigned int index);
