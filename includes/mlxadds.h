@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 17:32:17 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/05 04:00:59 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/07/22 23:11:12 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MLXADDS_H
 
 # include <stdlib.h>
+
+# include "mlx.h"
 
 enum	e_event_codes
 {
@@ -54,5 +56,6 @@ void	mlx_buff_put_pixel(t_img *img, int x, int y, int col);
 void	mlx_draw_line(t_mlx *mlx, int start[2], int end[2], int col);
 void	mlx_clear_buffer(t_mlx *mlx); //Clears the off screen buffer by setting its data to 0.
 void	mlx_set_bg_color(t_mlx *mlx, int col);
+void	mlx_render_buffer(t_mlx *mlx);
 
 #endif
