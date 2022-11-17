@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 00:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/20 03:13:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 04:33:09 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "mtxlib.h"
@@ -59,11 +59,14 @@ t_mtx	*mtx_slice_view(t_mtx *mtx, int slice[4], t_mtx	*out)
 	if (!__validate_setup_slice(mtx, slice, &rrange, &crange))
 		return (MTX_ERROR("invalid slice"));
 	ret = out;
-	if (!ret || !mtx_dup_struct(mtx, &ret))
+	if (!ret && !mtx_dup_struct(mtx, &ret))
 		return (MTX_ERROR("!mtx or malloc error"));
+	else
+		mtx_dup_struct_inplace(mtx, ret);
 	ret->offset = (mtx->strides[0] * slice[0] + mtx->strides[1] * slice[1]);
-	ret->shape[0] = rrange;//ft_clamp(rrange, 0, mtx->shape[0]);
-	ret->shape[1] = crange;//ft_clamp(crange, 0, mtx->shape[1]);
+	ret->shape[0] = rrange;
+	ret->shape[1] = crange;
+	ft_printf("slice view : shapes set (rrange %d, crange %d)\n", rrange, crange);
 	ret->is_view = 1;
 	if (rrange == 1)
 		mtx_transpose(ret);

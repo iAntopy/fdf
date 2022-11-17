@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 18:18:46 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/16 23:39:50 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 04:18:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	mtx_convert_arr_type(t_mtx *new, t_mtx *old);
 int		mtx_dtype_out(t_mtx *m1, t_mtx *m2);
 
 t_mtx	*mtx_dup_struct(t_mtx *mtx, t_mtx **out);
+t_mtx	*mtx_dup_struct_inplace(t_mtx *mtx, t_mtx *out);
 t_mtx	*mtx_dup_empty(t_mtx *mtx, t_mtx **out, int dtype);
 t_mtx	*mtx_copy(t_mtx *mtx);//, int dtype);
 

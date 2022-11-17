@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mtx_index.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/17 03:34:33 by iamongeo          #+#    #+#             */
+/*   Updated: 2022/11/17 04:08:00 by iamongeo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mtxlib.h"
 
 int	mtx_index_is_inbound(t_mtx *mtx, int row, int col)
@@ -20,7 +32,7 @@ void	*_mtx_arr(t_mtx *mtx)
 // For view matrices, the arr should be *(mtx->view_ptr) and be 
 // offset by mtx->offset before entering this function. For
 // regular matrices (non view) arr should be mtx->arr. In
-// either case strides is mtx->strdes.
+// either case strides is mtx->strides.
 void	*_mtx_idx(void *arr, int *strides, int row, int col)
 {
 	return (arr + (strides[0] * row) + (strides[1] * col));

@@ -6,14 +6,14 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 22:01:06 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/19 20:30:09 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 05:44:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mtxlib.h"
 
 // Assumes filled with zeros.
-void	__fill_identity_i(int n, int *arr)
+void	__mtx_fill_identity_i(int n, int *arr)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ void	__fill_identity_i(int n, int *arr)
 }
 
 // Assumes filled with zeros.
-void	__fill_identity_f(int n, float *arr)
+void	__mtx_fill_identity_f(int n, float *arr)
 {
 	int	i;
 

@@ -6,31 +6,37 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:24:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 00:23:19 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 06:00:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	map_clear_str(t_lst **map)
+static int	map_clear_str(t_lst **map)
 {
 	ft_lstclear(map, free);
 	return (0);
 }
 
-int	map_clear_strtab(t_lst **map)
+static int	map_clear_strtab(t_lst **map)
 {
 	t_lst	*elem;
+	t_lst	*elem_next;
 
 	if (!map)
 		return (0);
+	printf("map clear strtab : enetered and checked. *map : %p\n", *map);
 	elem = *map;
 	while (elem)
 	{
+		elem_next = elem->next;
+		printf("map clear strtab : elem->content : %p, elem->content[0] : %s\n", elem->content, ((char **)(elem->content))[0]);
 		strtab_clear((char ***)&elem->content);
-		elem = elem->next;
+		ft_free_p((void **)&elem);
+		elem = elem_next;
 	}
-	ft_free_p((void **)map);
+	printf("map clear strtab : enetered and checked. *map : %p\n", *map);
+	*map = NULL;
 	return (0);
 }
 
@@ -67,7 +73,6 @@ static int	split_validate(t_lst *map_lst)
 	char	**strtab;
 	t_lst	*elem;
 	int		width;
-	int		cur_width;
 
 	printf("split validate : entered\n");
 	width = 0;
@@ -85,17 +90,12 @@ static int	split_validate(t_lst *map_lst)
 			width = strtab_len(strtab);
 			printf("split validate : width : %d \n", width);
 		}
-		else
-		{
-			cur_width = strtab_len(strtab);
-			printf("split validate : cur_width, width : %d, %d \n", cur_width, width);
-			if (cur_width != width)
-				return ((int)strtab_clear(&strtab) - 1);
-			width = cur_width;
-		}
-		printf("split validate : if block passed \n");
+		else if (width > 0 && strtab_len(strtab) != width)
+			width = -1;
+		printf("split validate : elem->content before ft_free_p : %p, %s\n", elem->content, elem->content);
 		ft_free_p((void **)&elem->content);
-		elem->content = strtab;
+		printf("split validate : elem->content after ft_free_p : %p\n", elem->content);
+		elem->content = (void *)strtab;
 		elem = elem->next;
 	}
 	return (width);
@@ -124,10 +124,10 @@ int	load_map(char *map_name, t_fmap *fmap)
 	int		width;
 	int		fd;
 
-	printf("laod_map : entered. map_name : %s, fmap ptr : %p\n", map_name, fmap);
+	printf("load_map : entered. map_name : %s, fmap ptr : %p\n", map_name, fmap);
 	if (!map_name || !fmap)
 		return (-1);
-	printf("laod_map : checks passed\n");
+	printf("load_map : checks passed\n");
 	map_lst = NULL;
 	fd = open(map_name, O_RDONLY);
 	if (fd < -1)
@@ -135,25 +135,28 @@ int	load_map(char *map_name, t_fmap *fmap)
 		printf("load_map : file open failed %d\n", fd);
 		return (-1);
 	}
-	printf("laod_map : file opened\n");
+	printf("load_map : file opened\n");
 	if (gather_map_lines(fd, &map_lst) < 0)
 		return (map_clear_str(&map_lst) - 1);
-	printf("laod_map : file read and put in list\n");
+	printf("load_map : file read and put in list\n");
 	fmap->w = split_validate(map_lst);;
 	if (fmap->w < 0)
 		return (map_clear_strtab(&map_lst) - 1);
 	fmap->h = ft_lstsize(map_lst);
-	printf("laod_map : map_list split and validated. (w, h) : (%d, %d)\n", fmap->w, fmap->h);
+	printf("load_map : map_list split and validated. (w, h) : (%d, %d)\n", fmap->w, fmap->h);
 	if (!convert_map_lst_to_mtx(fmap, map_lst))
 		return (map_clear_strtab(&map_lst) - 1);
-	printf("laod_map : split map converted to mtx\n");
+	printf("load_map : split map converted to mtx\n");
 	return (map_clear_strtab(&map_lst));
 }
 
 int	main(int argc, char **argv)
 {
 	t_fmap	fmap;
+	t_mtx	last_col;
 	t_mtx	*mean;
+	t_quat	*q1;
+	t_quat	*q2;
 
 	if (argc < 2)
 		return (1);
@@ -164,9 +167,27 @@ int	main(int argc, char **argv)
 	}
 	mean = mtx_mean(fmap.coords, ROWWISE, NULL);
 	mtx_sub(fmap.coords, mean, fmap.coords);
-
-	mtx_print(fmap.coords);
-	mtx_clear(&fmap.coords);
 	mtx_clear(&mean);
+
+	printf("fdf : selecting last col\n");
+	ft_memclear(&last_col, sizeof(t_mtx));
+	mtx_select_col(fmap.coords, 3, &last_col);
+	mtx_display_info(&last_col);
+	_mtx_iaddf_pscalar(&last_col, 1.0f);
+	mtx_print(&last_col);
+	mtx_print(fmap.coords);
+
+	q1 = quat_create((float)M_PI / 4, 0, 1, 0);
+	q2 = quat_create(atanf(sqrtf(2)), 1, 0, 0);
+	quat_combine(q1, q2, q1);
+	quat_clear(&q2);
+	_quat_translation_set(q1, 100, 100, 0);
+	quat_display_info(q1);
+	quat_irotate(fmap.coords, q1);
+	printf("fdf : print map rotated and translated in one go with combined quaternion\n");
+	mtx_print(fmap.coords);
+
+	quat_clear(&q1);
+	mtx_clear(&fmap.coords);
 	return (0);
 }

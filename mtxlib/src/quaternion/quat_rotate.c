@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 01:33:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/22 18:43:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 04:49:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_mtx	*quat_irotate(t_mtx *mtx, t_quat *q)
 	if (!mtx || !q)
 		return (MTX_ERROR("missing params"));
 	if (mtx->is_view)
-		return (MTX_ERROR("Can't output quaternion rotation to view"));
+		return (MTX_ERROR("Cannot output quaternion rotation to view"));
 	else if (!mtx_malloc_swap(mtx))
 		return (MTX_ERROR("malloc error"));
 	__mtx_dotf_nx4_4x4(mtx->shape[0], mtx->arr, (float *)q->__rot_arr, mtx->swap);

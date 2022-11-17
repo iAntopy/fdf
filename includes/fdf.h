@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/16 22:56:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 06:12:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,26 @@
 # define FDF_ERR_CLR_LST(err, l) fdf_e_clr_str_list((char *)__FUNCTION__, \
 		(char *)(err), (t_lst *)(l))
 
+# define SCN_WIDTH 840
+# define SCN_HEIGHT 680
+
 typedef struct	s_fdf_map
 {
 	int		w;
 	int		h;
 	t_mtx	*coords;
+	t_quat	*transform;
 }	t_fmap;
+
+typedef struct	s_fdf_data
+{
+	t_mlx	mlx;
+	t_fmap	map;
+}	t_fdf;
 
 
 // FDF INIT
-t_mtx	*fdf_map_loader(int fd);
+t_mtx	*fdf_load_map(int fd, t_fmap *map);
 
 // ERROR HANDLING
 
