@@ -1,0 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mtx_cumul_ufuncs.h                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/22 18:13:21 by iamongeo          #+#    #+#             */
+/*   Updated: 2022/06/22 18:17:20 by iamongeo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+#ifndef MTX_CUMUL_UFUNCS_H
+# define MTX_CUMUL_UFUNCS_H
+
+# include "mtx_types.h"
+
+void	__mtx_init_cumul_opp(t_copp *co, t_mtx *mtx, t_mtx *out);
+void	_mtx_copp_whole(t_copp *co);
+void	_mtx_copp_by_row(t_copp *co);
+void	_mtx_copp_by_col(t_copp *co);
+
+
