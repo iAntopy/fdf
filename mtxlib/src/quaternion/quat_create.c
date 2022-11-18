@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 23:55:34 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 05:45:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 22:04:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	__quat_init_rot_mtx(float r[4][4], float q[4], float s)
 	r[3][3] = 1;
 }
 
-void	_quat_update(t_quat *q, float vect[3], float ang)
+void	_quat_update(t_quat *q, const float vect[3], float ang)
 {
 	float	x;
 	float	y;

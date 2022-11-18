@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 06:12:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 20:40:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 
 # include "mlx.h"
+# include "mlxadds.h"
 # include "keycodesdef.h"
 # include "mtxlib.h"
 
@@ -31,13 +32,18 @@
 
 # define SCN_WIDTH 840
 # define SCN_HEIGHT 680
+# define SCN_MID_X (SCN_WIDTH / 2)
+# define SCN_MID_Y (SCN_HEIGHT / 2)
+# define WIN_TITLE "Fil de Fer"
+# define ISO_Y_THETA 0.785398163397
+# define ISO_X_THETA 0.61547970867
 
 typedef struct	s_fdf_map
 {
 	int		w;
 	int		h;
 	t_mtx	*coords;
-	t_quat	*transform;
+	t_quat	transform;
 }	t_fmap;
 
 typedef struct	s_fdf_data
@@ -46,9 +52,8 @@ typedef struct	s_fdf_data
 	t_fmap	map;
 }	t_fdf;
 
-
 // FDF INIT
-t_mtx	*fdf_load_map(int fd, t_fmap *map);
+int	fdf_load_map(char *map_name, t_fmap *map);
 
 // ERROR HANDLING
 

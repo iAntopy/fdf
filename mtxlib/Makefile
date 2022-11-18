@@ -6,7 +6,7 @@
 #    By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/16 23:23:37 by iamongeo          #+#    #+#              #
-#    Updated: 2022/11/17 05:38:07 by iamongeo         ###   ########.fr        #
+#    Updated: 2022/11/17 16:13:22 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ OBJS	= $(SRCS:.c=.o)
 INCLS	= includes/
 
 CC	= gcc
-CFLAGS	= -lm -Wall -Wextra -Werror -O2
+CFLAGS	= -Wall -Wextra -Werror -O2
 
 AR	= ar -rcs
 

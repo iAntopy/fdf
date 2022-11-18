@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/26 22:13:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 05:30:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 19:26:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 t_quat	*quat_create(float ang, float x, float y, float z);
 t_quat	*quat_create_empty(t_quat *q);// if q is NULL, mallocs and inits new quaternion. If declared t_quat on stack is passed as q, acts as mtx_shell().
-void	_quat_update(t_quat *q, float vect[3], float ang);// DO NOT declare vect outside. Change q->uv x, y, z values in place and pass q->uv + 1 as vect[3]. q->uv will be normalized
+void	_quat_update(t_quat *q, const float vect[3], float ang);// DO NOT declare vect outside. Change q->uv x, y, z values in place and pass q->uv + 1 as vect[3]. q->uv will be normalized
 void	quat_clear(t_quat **q);
 void	quat_display_info(t_quat *q);
 void	__quat_init_rot_mtx(float rot[4][4], float q[4], float w);

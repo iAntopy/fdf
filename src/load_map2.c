@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:24:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 06:00:21 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 17:46:55 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,9 @@ static int	gather_map_lines(int fd, t_lst **map_lst)
 	return (0);
 }
 
-int	load_map(char *map_name, t_fmap *fmap)
+int	fdf_load_map(char *map_name, t_fmap *fmap)
 {
 	t_lst	*map_lst;
-	int		width;
 	int		fd;
 
 	printf("load_map : entered. map_name : %s, fmap ptr : %p\n", map_name, fmap);
@@ -149,7 +148,7 @@ int	load_map(char *map_name, t_fmap *fmap)
 	printf("load_map : split map converted to mtx\n");
 	return (map_clear_strtab(&map_lst));
 }
-
+/*
 int	main(int argc, char **argv)
 {
 	t_fmap	fmap;
@@ -191,3 +190,4 @@ int	main(int argc, char **argv)
 	mtx_clear(&fmap.coords);
 	return (0);
 }
+*/

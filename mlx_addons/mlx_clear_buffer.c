@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 02:09:01 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/14 16:43:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/08/25 19:06:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	mlx_clear_buffer(t_mlx *mlx)
 {
-//	size_t	*b;
-//	size_t	total_bytes;
-//	size_t	s;
-//	char	*c;
+	size_t	*b;
+	size_t	total_bytes;
+	size_t	s;
+	char	*c;
 
-	ft_memclear(mlx->off_buff->addr, mlx->buff1.line_len * mlx->height);
-/*
-	total_bytes = mlx->buff1.line_len * mlx->height;
+	if (!mlx->off_buff)
+		return ;
+	total_bytes = mlx->buff_size;
 	b = (size_t *)mlx->off_buff->addr;
 	s = sizeof(size_t);
 	while (total_bytes >= s)
@@ -33,5 +33,4 @@ void	mlx_clear_buffer(t_mlx *mlx)
 	c = (char *)b;
 	while (total_bytes--)
 		*c = 0;
-*/
 }

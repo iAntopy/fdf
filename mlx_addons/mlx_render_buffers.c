@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_buff_put_pixel.c                               :+:      :+:    :+:   */
+/*   mlx_render_buffers.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/04 17:50:46 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/08/25 19:05:27 by iamongeo         ###   ########.fr       */
+/*   Created: 2022/07/22 23:04:27 by iamongeo          #+#    #+#             */
+/*   Updated: 2022/09/14 22:40:43 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlxadds.h"
 
-void	mlx_buff_put_pixel(t_img *buff, int x, int y, int color)
+// pushes screen_buff to window and swaps buffers for next draw.
+int	mlx_render_buffer(t_mlx *mlx)
 {
-	char	*pix;
-
-	pix = buff->addr + (y * buff->line_len) + (x * buff->bytes_per_pxl);
-	*(unsigned int *)pix = color;
+	mlx_swap_buffers(mlx);
+	return (mlx_put_image_to_window(mlx->conn,
+			mlx->win, mlx->scn_buff->img,
+			0, 0));
 }
