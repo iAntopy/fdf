@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:24:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 17:46:55 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/18 02:02:18 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,14 @@ static int	split_validate(t_lst *map_lst)
 	elem = map_lst;
 	while (elem)
 	{
-		printf("split validate : loop with elem : %p\n", elem);
 		strtab = NULL;
 		strtab = ft_split_space((char *)elem->content);
 		if (!strtab)
 			return (-1);
-		printf("split validate : strtab : %p\n", strtab);
 		if (!width)
-		{
 			width = strtab_len(strtab);
-			printf("split validate : width : %d \n", width);
-		}
 		else if (width > 0 && strtab_len(strtab) != width)
 			width = -1;
-		printf("split validate : elem->content before ft_free_p : %p, %s\n", elem->content, elem->content);
 		ft_free_p((void **)&elem->content);
 		printf("split validate : elem->content after ft_free_p : %p\n", elem->content);
 		elem->content = (void *)strtab;
@@ -134,18 +128,15 @@ int	fdf_load_map(char *map_name, t_fmap *fmap)
 		printf("load_map : file open failed %d\n", fd);
 		return (-1);
 	}
-	printf("load_map : file opened\n");
 	if (gather_map_lines(fd, &map_lst) < 0)
 		return (map_clear_str(&map_lst) - 1);
-	printf("load_map : file read and put in list\n");
+	close(fd);
 	fmap->w = split_validate(map_lst);;
 	if (fmap->w < 0)
 		return (map_clear_strtab(&map_lst) - 1);
 	fmap->h = ft_lstsize(map_lst);
-	printf("load_map : map_list split and validated. (w, h) : (%d, %d)\n", fmap->w, fmap->h);
 	if (!convert_map_lst_to_mtx(fmap, map_lst))
 		return (map_clear_strtab(&map_lst) - 1);
-	printf("load_map : split map converted to mtx\n");
 	return (map_clear_strtab(&map_lst));
 }
 /*

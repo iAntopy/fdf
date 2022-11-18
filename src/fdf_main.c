@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 06:08:14 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 22:58:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/18 01:59:47 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,17 @@ static int	fdf_clear(t_fdf *fdf, int exit_code)
 
 static void	scale_map_to_window(t_fmap *map)
 {
-	float	_arr[8];
+	float	_arr[4];
 	t_mtx	mins;
-	t_mtx	maxs;
 	t_mtx	view_xyz;
 	float	ratio;
 
 	mins.arr = _arr;
-	maxs.arr = _arr + 4;
 	mtx_shell(&mins, 4, 1, DTYPE_F);
-	mtx_shell(&maxs, 4, 1, DTYPE_F);
 	
 	mtx_min(map->coords, ROWWISE, &mins);
-	mtx_max(map->coords, ROWWISE, &maxs);
-//	_arr[8] = _arr[4] - _arr[0];
-//	_arr[9] = _arr[5] - _arr[1];
 	mtx_select_col_range(map->coords, 0, 3, &view_xyz);
-	if ((_arr[0] / SCN_WIDTH) > (_arr[1] / SCN_HEIGHT))
+	if ((_arr[0] / SCN_WIDTH) < (_arr[1] / SCN_HEIGHT))
 	{
 		ratio = SCN_MID_X * 0.8;
 		_mtx_idivf_pscalar(&view_xyz, _arr[0]);
@@ -52,6 +46,7 @@ static void	scale_map_to_window(t_fmap *map)
 		ratio = SCN_MID_Y * 0.8;
 		_mtx_idivf_pscalar(&view_xyz, _arr[1]);
 	}
+	printf("scale map to win : ratio %f\n", ratio);
 	quat_iscale(&map->transform, ratio);
 }
 
@@ -76,8 +71,6 @@ static int	transform_and_scale_map_to_window(t_fmap *map)
 	mtx_sub(map->coords, mean, map->coords);
 	printf("transform and scale : translation set \n");
 	quat_display_info(q1);
-	quat_irotate(map->coords, &map->transform);
-//	mtx_inormalize(map->coords);
 	scale_map_to_window(map);
 	_quat_translation_set(&map->transform, SCN_MID_X, SCN_MID_Y, 0);
 	quat_display_info(&map->transform);

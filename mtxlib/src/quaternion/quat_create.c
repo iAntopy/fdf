@@ -6,36 +6,35 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 23:55:34 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 22:04:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/18 01:47:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mtxlib.h"
 
-void	__quat_init_rot_mtx(float r[4][4], float q[4], float s)
+void	__quat_init_rot_mtx(float r[4][4], float q[4], float scalar)
 {
+	float	w;
 	float	x;
 	float	y;
 	float	z;
 
+	w = q[0];
 	x = q[1];
 	y = q[2];
 	z = q[3];
-	r[0][0] = 1 - 2 * y * y - 2 * z * z;
-	r[0][1] = 2 * x * y - 2 * s * z;
-	r[0][2] = 2 * x * z + 2 * s * y;
+	r[0][0] = (1 - 2 * y * y - 2 * z * z) * scalar;
+	r[0][1] = (2 * x * y - 2 * w * z) * scalar;
+	r[0][2] = (2 * x * z + 2 * w * y) * scalar;
 	r[0][3] = 0;
-	r[1][0] = 2 * x * y + 2 * s * z;
-	r[1][1] = 1 - 2 * x * x - 2 * z * z;
-	r[1][2] = 2 * y * z - 2 * s * x;
+	r[1][0] = (2 * x * y + 2 * w * z) * scalar;
+	r[1][1] = (1 - 2 * x * x - 2 * z * z) * scalar;
+	r[1][2] = (2 * y * z - 2 * w * x) * scalar;
 	r[1][3] = 0;
-	r[2][0] = 2 * x * z - 2 * s * y;
-	r[2][1] = 2 * y * z + 2 * s * x;
-	r[2][2] = 1 - 2 * x * x - 2 * y * y;
+	r[2][0] = (2 * x * z - 2 * w * y) * scalar;
+	r[2][1] = (2 * y * z + 2 * w * x) * scalar;
+	r[2][2] = (1 - 2 * x * x - 2 * y * y) * scalar;
 	r[2][3] = 0;
-//	r[3][0] = 0;
-//	r[3][1] = 0;
-//	r[3][2] = 0;
 	r[3][3] = 1;
 }
 
@@ -61,7 +60,7 @@ void	_quat_update(t_quat *q, const float vect[3], float ang)
 	q->q[1] = q->uv[1] * sin_ang;
 	q->q[2] = q->uv[2] * sin_ang;
 	q->q[3] = q->uv[3] * sin_ang;
-	__quat_init_rot_mtx(q->__rot_arr, q->q, q->q[0]);
+	__quat_init_rot_mtx(q->__rot_arr, q->q, q->scalar);
 }
 
 static void	__setup_quat(t_quat *q)
@@ -72,6 +71,7 @@ static void	__setup_quat(t_quat *q)
 	mtx_shell(q->rot_mtx, 4, 4, DTYPE_F);
 //im 	q->rot_mtx->swap = (float *)q->__rot_arr_swap;
 	q->translation = &(q->__tr_view);
+	q->scalar = 1;
 	mtx_select_row(q->rot_mtx, 3, q->translation);
 }
 

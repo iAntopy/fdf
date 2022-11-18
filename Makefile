@@ -25,7 +25,7 @@ endif
 LIBFT		= libft/libft.a
 LIBMLXADDS	= mlx_addons/libmlxadds.a
 LIBMTX		= mtxlib/libmtx.a
-LIBS		= $(LIBFT) $(LIBMLXADDS) $(LIBMTX)
+LIBS		= $(LIBMLXADDS) $(LIBMTX) $(LIBFT)
 
 %.o:	%.c
 	$(CC) $(CFLAGS) -I$(INCLS) -c $< -o $@
@@ -33,7 +33,7 @@ LIBS		= $(LIBFT) $(LIBMLXADDS) $(LIBMTX)
 all:	$(NAME)
 
 $(NAME):	$(OBJS) $(LIBS)
-	$(CC) $(CFLAGS) $(FRAMEWORKS) $(OBJS) -o $(NAME) $(LIBS)
+	$(CC) $(CFLAGS) -I$(INCLS) $(FRAMEWORKS) $(OBJS) -o $(NAME) $(LIBS)
 
 $(NAME_BONUS):	$(LIBS) $(OBJ_COM) $(OBJ_B)
 	$(CC) $(CFLAGS) $(FRAMEWORKS) $(OBJ_COM) $(OBJ_B) -o $(NAME_BONUS) $(LIBS)

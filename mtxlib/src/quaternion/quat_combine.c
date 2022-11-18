@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 16:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 05:38:36 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/18 01:40:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ t_quat	*quat_combine(t_quat *q1, t_quat *q2, t_quat *out)
 		ret = quat_create_empty(NULL);
 	if (!ret)
 		return (MTX_ERROR("malloc error"));
+	ret->scalar = q1->scalar * q2->scalar;
 	__quat_combine(q1, q2, ret, q2->q[0]);
-	__quat_init_rot_mtx(ret->__rot_arr, ret->q + 1, ret->q[0]);
+//	__quat_init_rot_mtx(ret->__rot_arr, ret->q + 1, ret->q[0]);
+	__quat_init_rot_mtx(ret->__rot_arr, ret->q, ret->scalar);
 	return (ret);
 }
 
@@ -84,6 +86,6 @@ t_quat	*quat_add(t_quat *q, float rll, float ptc, float yaw)
 			__quat_combine(q, &q2, q, q->q[0]);
 		}
 	}
-	__quat_init_rot_mtx(q->__rot_arr, q->q, q->q[0]);
+	__quat_init_rot_mtx(q->__rot_arr, q->q, q->scalar);
 	return (q);
 }
