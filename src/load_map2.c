@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:24:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/18 02:02:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/18 20:36:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,19 @@ static t_mtx	*convert_map_lst_to_mtx(t_fmap *fmap, t_lst *map_lst)
 	j = -1;
 	while (row && ++j < fmap->h)
 	{
+//		strtab_print((char **)row->content);
+//		printf("row strtab ptr : %p\n", row->content);
 		i = -1;
 		while (++i < fmap->w)
 		{
 			data = (float *)mtx_index(fmap->coords, j * fmap->w + i, 0);
 			*data = i;
 			*(data + 1) = j;
+//			printf("loader : (x, y) = z : (%d, %d) = %d, content[i] : %s\n", i, j, ft_atoi(((char **)row->content)[i]), ((char **)row->content)[i]);
 			*(data + 2) = ft_atoi(((char **)row->content)[i]);
 			*(data + 3) = 1;
 		}
-		row = map_lst->next;
+		row = row->next;
 	}
 	return (fmap->coords);
 }
@@ -74,13 +77,14 @@ static int	split_validate(t_lst *map_lst)
 	t_lst	*elem;
 	int		width;
 
-	printf("split validate : entered\n");
+//	printf("split validate : entered\n");
 	width = 0;
 	elem = map_lst;
 	while (elem)
 	{
 		strtab = NULL;
 		strtab = ft_split_space((char *)elem->content);
+//		strtab_print(strtab);
 		if (!strtab)
 			return (-1);
 		if (!width)
@@ -88,8 +92,9 @@ static int	split_validate(t_lst *map_lst)
 		else if (width > 0 && strtab_len(strtab) != width)
 			width = -1;
 		ft_free_p((void **)&elem->content);
-		printf("split validate : elem->content after ft_free_p : %p\n", elem->content);
+//		printf("split validate : elem->content after ft_free_p : %p\n", elem->content);
 		elem->content = (void *)strtab;
+//		printf("strtab ptr : %p\n", strtab);
 		elem = elem->next;
 	}
 	return (width);

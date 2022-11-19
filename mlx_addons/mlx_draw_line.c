@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 21:55:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/05 03:29:23 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/18 20:12:50 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,21 +97,22 @@ void	mlx_draw_line(t_mlx *mlx, int start[2], int end[2], int color)
 	limits[1] = end;
 	if (abs(deltas[1]) < abs(deltas[0]))
 	{
-		printf("draw line dx > dy, swap : %d\n", (start[0] > end[0]));
+//		printf("draw line dx > dy, swap : %d\n", (start[0] > end[0]));
 		if (start[0] > end[0])
 		{
 			swap_limits(limits, deltas);
-			printf("SWAP!\n");
+//			printf("SWAP!\n");
 		}
+//		printf("draw line low : from (%i, %i) to delta (%i, %i), color %d\n", *limits[0], *limits[1], deltas[0], deltas[1], color);
 		draw_line_low(mlx, limits, deltas, color);
 	}
 	else
 	{
-		printf("draw line dy > dx, swap : %d\n", (start[1] > end[1]));
+//		printf("draw line dy > dx, swap : %d\n", (start[1] > end[1]));
 		if (start[1] > end[1])
 		{
 			swap_limits(limits, deltas);
-			printf("SWAP!\n");
+//			printf("SWAP!\n");
 		}
 		draw_line_high(mlx, limits, deltas, color);
 	}

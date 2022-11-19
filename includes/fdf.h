@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 20:40:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/18 22:05:40 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define SCN_MID_Y (SCN_HEIGHT / 2)
 # define WIN_TITLE "Fil de Fer"
 # define ISO_Y_THETA 0.785398163397
+//# define ISO_X_THETA 0.785398163397
 # define ISO_X_THETA 0.61547970867
 
 typedef struct	s_fdf_map

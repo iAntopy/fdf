@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/26 22:13:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 22:11:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/18 01:45:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	__quat_init_rot_mtx(float rot[4][4], float q[4], float w);
 t_quat	*quat_combine(t_quat *q1, t_quat *q2, t_quat *out);
 
 // QUATERNION ROTATION
-
 t_mtx	*quat_rotate(t_mtx *mtx, t_quat *q, t_mtx *out);
 t_mtx	*quat_irotate(t_mtx *mtx, t_quat *q);
 t_mtx	*_quat_rotate(t_mtx *mtx, t_quat *q, t_mtx *out);
@@ -40,8 +39,10 @@ t_quat	*_quat_translation_move(t_quat *q, float dx, float dy, float dz);
 t_quat	*quat_translation_set(t_quat *q, t_mtx *pos);
 t_quat	*quat_translation_set(t_quat *q, t_mtx *delta);
 
-// QUATERNION SCALING
+// QUATERNION ROTATION
 t_quat	*quat_scale(t_quat *q, float scalar, t_quat *out);
 t_quat	*quat_iscale(t_quat *q, float scalar);
+t_quat	*quat_scale_set(t_quat *q, float scalar, t_quat *out);
+t_quat	*quat_iscale_set(t_quat *q, float scalar);
 
 #endif
