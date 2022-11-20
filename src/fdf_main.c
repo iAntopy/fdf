@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 06:08:14 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/18 22:08:12 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/20 03:09:49 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,8 @@ int	main(int argc, char **argv)
 	if (fdf_load_map(argv[1], &fdf.map) < 0)
 		return (2);
 //	return (0);
-	if (mlx_init_double_buff_window(&fdf.mlx, 
-			SCN_WIDTH, SCN_HEIGHT, WIN_TITLE) < 0)
+	if (!mlx_init_double_buff_window(&fdf.mlx, 
+			SCN_WIDTH, SCN_HEIGHT, WIN_TITLE))
 		return (fdf_clear(&fdf, 3));
 	
 	transform_and_scale_map_to_window(&fdf.map);

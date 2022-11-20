@@ -16,7 +16,10 @@ CFLAGS		= -Wall -Werror -Wextra -O2
 NAME		= fdf
 
 ifeq ($(shell uname -s), Linux)
-	FRAMEWORKS	= -lm -lmlx -lX11 -lXext
+	MINILIBX_PATH	= minilibx/minilibx-linux/
+	LIBMLX		= $(MINILIBX_PATH)libmlx.a
+	FRAMEWORKS	= -lm -lX11 -lXext
+
 endif
 ifeq ($(shell uname -s), Darwin)
 	FRAMEWORKS	= -framework OpenGL -framework Appkit -lmlx
@@ -25,7 +28,7 @@ endif
 LIBFT		= libft/libft.a
 LIBMLXADDS	= mlx_addons/libmlxadds.a
 LIBMTX		= mtxlib/libmtx.a
-LIBS		= $(LIBMLXADDS) $(LIBMTX) $(LIBFT)
+LIBS		= $(LIBMLXADDS) $(LIBMTX) $(LIBFT) $(LIBMLX)
 
 %.o:	%.c
 	$(CC) $(CFLAGS) -I$(INCLS) -c $< -o $@
@@ -50,6 +53,8 @@ $(LIBFT):
 	make -C libft/
 $(LIBMTX):
 	make -C mtxlib/
+$(LIBMLX):
+	make -C $(MINILIBX_PATH)
 $(LIBMLXADDS):
 	make -C mlx_addons/
 
