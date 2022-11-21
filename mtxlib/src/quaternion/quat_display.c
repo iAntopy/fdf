@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 05:20:09 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/18 00:56:28 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/20 19:11:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 void	quat_display_info(t_quat *q)
 {
+	if (!q)
+	{
+		MTX_ERROR("No quaternion given.");
+		return ;
+	}
 	printf("\n@@____________( Quaternion %p )__________@@\n", q);
 	printf("@@\n@@	- angle : %f\n", q->ang);
 	printf("@@	- unit vect : [ %f, %f, %f, %f ]\n", q->uv[0], q->uv[1], q->uv[2], q->uv[3]);

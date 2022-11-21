@@ -6,10 +6,12 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 19:07:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/25 22:32:29 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/20 23:29:46 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef KEYCODES_MACOS_H
+# define KEYCODES_MACOS_H
 /*
  *  Summary:
  *    Virtual keycodes
@@ -143,3 +145,5 @@ enum {
   KC_Down                 = 0x7D,
   KC_Up                   = 0x7E
 };
+
+#endif

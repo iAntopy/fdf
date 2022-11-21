@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 17:32:17 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/09/14 22:39:51 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/20 21:33:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define MLXADDS_H
 
 # include <stdlib.h>
-
 # include <mlx.h>
+
 # include "libft.h"
 
 enum	e_event_codes
@@ -60,5 +60,6 @@ void	mlx_clear_buffer(t_mlx *mlx);
 void	mlx_set_bg_color(t_mlx *mlx, int col);
 int		mlx_render_buffer(t_mlx *mlx);
 void	mlx_close(t_mlx *mlx);
+void	mlx_get_info(t_mlx *mlx);
 
 #endif

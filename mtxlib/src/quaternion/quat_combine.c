@@ -6,12 +6,40 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 16:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/18 01:40:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/21 03:46:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mtxlib.h"
 
+// Works inplace. w1 = q2->q[0]
+static void	__quat_combine(float *q1, float *q2, t_quat *out)
+{
+	float	w;
+	float	a;
+	float	b;
+	float	c;
+	float	o[4];
+
+	w = q1[0];
+	a = q1[1];
+	b = q1[2];
+	c = q1[3];
+	o[0] = w * q2[0] - a * q2[1] - b * q2[2] - c * q2[3];
+	o[1] = w * q2[1] + a * q2[0] + b * q2[3] - c * q2[2];
+	o[2] = w * q2[2] - a * q2[3] + b * q2[0] + c * q2[1];
+	o[3] = w * q2[3] + a * q2[2] - b * q2[1] + c * q2[0];
+	out->q[0] = o[0];
+	out->q[1] = o[1];
+	out->q[2] = o[2];
+	out->q[3] = o[3];
+	a = sinf(acosf(o[0]));
+	out->ang = 2 * a;
+	out->uv[1] = o[1] / a;
+	out->uv[2] = o[2] / a;
+	out->uv[3] = o[3] / a;
+}
+/*
 // Works inplace. w1 = q2->q[0]
 static void	__quat_combine(t_quat *q1, t_quat *q2, t_quat *out, float w1)
 {
@@ -39,6 +67,7 @@ static void	__quat_combine(t_quat *q1, t_quat *q2, t_quat *out, float w1)
 	out->uv[2] = o[2] / w1;
 	out->uv[3] = o[3] / w1;
 }
+*/
 
 // Works in place. eg.: a = q1, b = q2, a = out.
 t_quat	*quat_combine(t_quat *q1, t_quat *q2, t_quat *out)
@@ -52,19 +81,31 @@ t_quat	*quat_combine(t_quat *q1, t_quat *q2, t_quat *out)
 		ret = quat_create_empty(NULL);
 	if (!ret)
 		return (MTX_ERROR("malloc error"));
-	ret->scalar = q1->scalar * q2->scalar;
-	__quat_combine(q1, q2, ret, q2->q[0]);
+//	ret->scalars[0] = q1->scalars[0] * q2->scalars[0];
+//	ret->scalars[1] = q1->scalars[1] * q2->scalars[1];
+//	ret->scalars[2] = q1->scalars[2] * q2->scalars[2];
+	__quat_combine(q1->q, q2->q, ret);
 //	__quat_init_rot_mtx(ret->__rot_arr, ret->q + 1, ret->q[0]);
-	__quat_init_rot_mtx(ret->__rot_arr, ret->q, ret->scalar);
+	__quat_init_rot_mtx(ret->__rot_arr, ret->q);//, ret->scalars);
 	return (ret);
 }
 
+// Adds to the rotation angle
+t_quat	*quat_twist(t_quat *q, float delta_ang)
+{
+	if (!q)
+		return (MTX_ERROR("missing params"));
+	if (!delta_ang)
+		return (q);
+	_quat_update(q, q->uv + 1, q->ang + delta_ang);
+	return (q);
+}
 
 t_quat	*quat_add(t_quat *q, float rll, float ptc, float yaw)
 {
 	t_quat	q2;
-	int		i;
-	float	*rads;
+//	int		i;
+//	float	*rads;
 	float	sin_ang;
 
 	if (!q)
@@ -72,20 +113,45 @@ t_quat	*quat_add(t_quat *q, float rll, float ptc, float yaw)
 	if (!(rll || ptc || yaw))
 		return (q);
 //	quat_create_empty(&q2);
-	i = -1;
-	rads = &rll;
-	while (++i < 3)
+//	i = -1;
+//	rads = &rll;
+//	while (++i < 3)
+//	{
+	if (rll)
 	{
-		if (rads[i])
-		{
-			sin_ang = sinf(rads[i] / 2);
-			q2.q[0] = cosf(rads[i] / 2);
-			q2.q[1] = (i == 0) * sin_ang;
-			q2.q[2] = (i == 1) * sin_ang;
-			q2.q[3] = (i == 2) * sin_ang;
-			__quat_combine(q, &q2, q, q->q[0]);
-		}
+		sin_ang = sinf(rll / 2);
+		q2.q[0] = cosf(rll / 2);
+		q2.q[1] = sin_ang;
+		q2.q[2] = 0;
+		q2.q[3] = 0;
+//		q2.q[2] = (i == 1) * sin_ang;
+//		q2.q[3] = (i == 2) * sin_ang;
+		__quat_combine(q->q, q2.q, q);
 	}
-	__quat_init_rot_mtx(q->__rot_arr, q->q, q->scalar);
+//	}
+	if (ptc)
+	{
+		sin_ang = sinf(ptc / 2);
+		q2.q[0] = cosf(ptc / 2);
+		q2.q[1] = 0;
+		q2.q[2] = sin_ang;
+		q2.q[3] = 0;
+//		q2.q[2] = (i == 1) * sin_ang;
+//		q2.q[3] = (i == 2) * sin_ang;
+		__quat_combine(q->q, q2.q, q);
+	}
+	if (yaw)
+	{
+		sin_ang = sinf(yaw / 2);
+		q2.q[0] = cosf(yaw / 2);
+		q2.q[1] = 0;
+		q2.q[2] = 0;
+		q2.q[3] = sin_ang;
+//		q2.q[2] = (i == 1) * sin_ang;
+//		q2.q[3] = (i == 2) * sin_ang;
+		__quat_combine(q->q, q2.q, q);
+	}
+
+	__quat_init_rot_mtx(q->__rot_arr, q->q);//, q->scalars);
 	return (q);
 }

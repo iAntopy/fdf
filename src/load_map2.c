@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:24:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/18 20:36:34 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/21 02:42:22 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,16 @@ int	fdf_load_map(char *map_name, t_fmap *fmap)
 	fmap->h = ft_lstsize(map_lst);
 	if (!convert_map_lst_to_mtx(fmap, map_lst))
 		return (map_clear_strtab(&map_lst) - 1);
+	fmap->screen_coords = mtx_copy(fmap->coords);
+	fmap->scalars = &fmap->__scalars;
+	fmap->__scalars.arr = fmap->__scalars_arr;
+	mtx_shell(fmap->scalars, 4, 1, DTYPE_F);
+	fmap->__scalars_arr[0] = 1;
+	fmap->__scalars_arr[1] = 1;
+	fmap->__scalars_arr[2] = 1;
+	fmap->__scalars_arr[3] = 1;
+	printf("loader : init scalars %p, arr %p\n", fmap->scalars, fmap->scalars->arr);
+	mtx_print(fmap->scalars);
 	return (map_clear_strtab(&map_lst));
 }
 /*

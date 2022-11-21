@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/18 22:05:40 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/21 02:26:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 # include "mlx.h"
 # include "mlxadds.h"
-# include "keycodesdef.h"
+# include "keycodes.h"
 # include "mtxlib.h"
 
 # define FDF_ERROR(err) fdf_err((char *)__FUNCTION__, (char *)(err))
@@ -39,12 +39,22 @@
 //# define ISO_X_THETA 0.785398163397
 # define ISO_X_THETA 0.61547970867
 
+# define BG_COL 0x31176e
+
 typedef struct	s_fdf_map
 {
 	int		w;
 	int		h;
 	t_mtx	*coords;
-	t_quat	transform;
+	t_mtx	*screen_coords;
+	t_mtx	*scalars;
+
+	t_quat	*transform;
+	t_quat	*y_transform;
+	t_quat	*x_transform;
+	t_quat	__qpool[3];
+	t_mtx	__scalars;
+	float	__scalars_arr[4];
 }	t_fmap;
 
 typedef struct	s_fdf_data

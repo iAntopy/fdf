@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 18:18:46 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/15 16:51:18 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/17 04:18:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	__mtx_setup_2d(t_mtx *mtx, int rows, int cols, size_t stride);
 // MEMORY MANAGEMENT
 void	*mtx_clear(t_mtx **mtx);
 void	*mtx_clear_list(int n, ...);
-int		malloc_free_p(size_t size, void **ptr);
-void	*malloc_free(size_t size, void **ptr);
+//int		mtx_malloc_free_p(size_t size, void **ptr);
+//void	*mtx_malloc_free(size_t size, void **ptr);
 size_t	mtx_get_dsize(int dtype);
 size_t	mtx_get_nb_elems(t_mtx *mtx);
 size_t	mtx_sizeof_array(t_mtx *mtx);
@@ -89,6 +89,7 @@ void	mtx_convert_arr_type(t_mtx *new, t_mtx *old);
 int		mtx_dtype_out(t_mtx *m1, t_mtx *m2);
 
 t_mtx	*mtx_dup_struct(t_mtx *mtx, t_mtx **out);
+t_mtx	*mtx_dup_struct_inplace(t_mtx *mtx, t_mtx *out);
 t_mtx	*mtx_dup_empty(t_mtx *mtx, t_mtx **out, int dtype);
 t_mtx	*mtx_copy(t_mtx *mtx);//, int dtype);
 
@@ -105,6 +106,7 @@ void	__mtx_fill_identity_i(int n, int *arr);
 void	__mtx_fill_identity_f(int n, float *arr);
 
 // ERROR HANDLING
+void	*mtx_fperror(const char *msg, ...);
 void	*mtx_err(char *origin, char *err);
 void	*mtx_e_clr(char *origin, char *err, t_mtx **mtx);
 
