@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 22:01:06 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 05:44:30 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/22 03:00:39 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	__mtx_fill_identity_f(int n, float *arr)
 	}
 }
 
-// Assumes filled with zeros.
+// Assumes filled with zeros. Works with views.
 void	_mtx_fill_identity_i(t_mtx *mtx)
 {
 	int	n;
@@ -51,7 +51,7 @@ void	_mtx_fill_identity_i(t_mtx *mtx)
 	}
 }
 
-// Assumes filled with zeros.
+// Assumes filled with zeros. Works with views.
 void	_mtx_fill_identity_f(t_mtx *mtx)
 {
 	int	n;

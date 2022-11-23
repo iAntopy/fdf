@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 16:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/21 03:46:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/22 18:52:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static void	__quat_combine(float *q1, float *q2, t_quat *out)
 	out->uv[1] = o[1] / a;
 	out->uv[2] = o[2] / a;
 	out->uv[3] = o[3] / a;
+	printf("__quat_combine : combined out->uv : (%f, %f, %f)\n", out->uv[0], out->uv[1], out->uv[2]);
 }
 /*
 // Works inplace. w1 = q2->q[0]
@@ -74,6 +75,7 @@ t_quat	*quat_combine(t_quat *q1, t_quat *q2, t_quat *out)
 {
 	t_quat	*ret;
 
+	printf("quat combine : entered\n");
 	if (!q1 || !q2)
 		return (MTX_ERROR("missing params"));
 	ret = out;
@@ -84,9 +86,13 @@ t_quat	*quat_combine(t_quat *q1, t_quat *q2, t_quat *out)
 //	ret->scalars[0] = q1->scalars[0] * q2->scalars[0];
 //	ret->scalars[1] = q1->scalars[1] * q2->scalars[1];
 //	ret->scalars[2] = q1->scalars[2] * q2->scalars[2];
+	printf("quat combine : about to combine\n");
 	__quat_combine(q1->q, q2->q, ret);
+	printf("quat combine : combine DONE. initializing rot mtx\n");
 //	__quat_init_rot_mtx(ret->__rot_arr, ret->q + 1, ret->q[0]);
-	__quat_init_rot_mtx(ret->__rot_arr, ret->q);//, ret->scalars);
+//	__quat_init_rot_mtx(ret->__rot_arr, ret->q);//, ret->scalars);
+	printf("quat combine : init rot mtx DONE. Applying dotf 4x4_4x4\n");
+	__mtx_dotf_4x4_4x4(q1->rot_mtx->arr, q2->rot_mtx->arr, ret->rot_mtx->arr);
 	return (ret);
 }
 
@@ -106,7 +112,7 @@ t_quat	*quat_add(t_quat *q, float rll, float ptc, float yaw)
 	t_quat	q2;
 //	int		i;
 //	float	*rads;
-	float	sin_ang;
+//	float	sin_ang;
 
 	if (!q)
 		return (MTX_ERROR("missing params"));
@@ -119,22 +125,23 @@ t_quat	*quat_add(t_quat *q, float rll, float ptc, float yaw)
 //	{
 	if (rll)
 	{
-		sin_ang = sinf(rll / 2);
+//		sin_ang = sinf(rll / 2);
 		q2.q[0] = cosf(rll / 2);
-		q2.q[1] = sin_ang;
+		q2.q[1] = sinf(rll / 2);
 		q2.q[2] = 0;
 		q2.q[3] = 0;
 //		q2.q[2] = (i == 1) * sin_ang;
 //		q2.q[3] = (i == 2) * sin_ang;
+//		quat_display_info(&q2);
 		__quat_combine(q->q, q2.q, q);
 	}
 //	}
 	if (ptc)
 	{
-		sin_ang = sinf(ptc / 2);
+//		sin_ang = sinf(ptc / 2);
 		q2.q[0] = cosf(ptc / 2);
 		q2.q[1] = 0;
-		q2.q[2] = sin_ang;
+		q2.q[2] = sinf(ptc / 2);//_ang;
 		q2.q[3] = 0;
 //		q2.q[2] = (i == 1) * sin_ang;
 //		q2.q[3] = (i == 2) * sin_ang;
@@ -142,16 +149,15 @@ t_quat	*quat_add(t_quat *q, float rll, float ptc, float yaw)
 	}
 	if (yaw)
 	{
-		sin_ang = sinf(yaw / 2);
+//		sin_ang = sinf(yaw / 2);
 		q2.q[0] = cosf(yaw / 2);
 		q2.q[1] = 0;
 		q2.q[2] = 0;
-		q2.q[3] = sin_ang;
+		q2.q[3] = sinf(yaw / 2);
 //		q2.q[2] = (i == 1) * sin_ang;
 //		q2.q[3] = (i == 2) * sin_ang;
 		__quat_combine(q->q, q2.q, q);
 	}
-
 	__quat_init_rot_mtx(q->__rot_arr, q->q);//, q->scalars);
 	return (q);
 }

@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/26 22:35:05 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 04:26:25 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/22 18:06:12 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ t_mtx	*mtx_dup_struct_inplace(t_mtx *mtx, t_mtx *out)
 {
 	if (!mtx)
 		return (MTX_ERROR("no input mtx"));
-	printf("dup inplace : mtx info :\n");
-	mtx_display_info(mtx);
 	ft_memcpy(out, mtx, sizeof(t_mtx));
 	out->arr = NULL;
 	out->swap = NULL;

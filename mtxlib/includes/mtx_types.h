@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 18:14:49 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/21 02:57:49 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/22 03:11:21 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,14 @@ typedef struct s_quaternion_base
 	float	uv[4];	// unit vector 
 	float	q[4];	// quaternion w, xi, yj, zk values.
 	t_mtx	*rot_mtx;			// ptr to __mtx, Use this variable for operations;
+	t_mtx	*rot3_mtx;			// ptr to __rot3_mtx, Use this variable for operations;
 	t_mtx	*translation;		// ptr to __tr_view. Init to (0,0,0,1) by default. Use quat_translate to modify.
 //	float	scalars[3];			// scalars in x, y, z directions. init to 1
 	t_mtx	__mtx;				// mtx shell for __rot_mtx
 	float	__rot_arr[4][4];	// rotation matrix form 4x4 arr.
 //	float	__rot_arr_swap[4][4];	// swap array for rot_mtx.
-	t_mtx	__tr_view;			// view of last row of rot_mtx;
+	t_mtx	__tr_view;		// view of last row of rot_mtx;
+	t_mtx	__rot3_view;		// view of top 3x3 of rot_mtx;
 }	t_quat;
 
 typedef void (*UFUNC_SIDED)(t_mtx *, t_mtx *);

@@ -2,7 +2,9 @@
 SRC_DIR		= 	src/
 
 _SRCS		= 	fdf_main.c	\
-				load_map2.c
+			load_map2.c	\
+			camera_utils.c	\
+			mlx_draw_line_z_shift.c
 
 INCLS		= includes/
 

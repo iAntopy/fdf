@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 23:55:34 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/21 02:55:39 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/22 07:59:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,27 @@ void	_quat_update(t_quat *q, const float vect[3], float ang)
 
 static void	__setup_quat(t_quat *q)
 {
+	static const int	slice_rot3[4] = {0, 0, 3, 3};
+	static const int	slice_translation[4] = {3, 0, 4, 3};
+
 	(q->__mtx).arr = (float *)q->__rot_arr;
 	q->rot_mtx = &(q->__mtx);
 	printf("__setup_quat : quat rot_mtx ptr %p\n", q->rot_mtx);
 	mtx_shell(q->rot_mtx, 4, 4, DTYPE_F);
 //im 	q->rot_mtx->swap = (float *)q->__rot_arr_swap;
 	q->translation = &(q->__tr_view);
+	q->rot3_mtx = &(q->__rot3_view);
 //	q->scalars[0] = 1;
 //	q->scalars[1] = 1;
 //	q->scalars[2] = 1;
-	mtx_select_row(q->rot_mtx, 3, q->translation);
+	mtx_slice_view(q->rot_mtx, (int *)slice_rot3, q->rot3_mtx);
+	mtx_slice_view(q->rot_mtx, (int *)slice_translation, q->translation);
+//	mtx_select_row(q->rot_mtx, 3, q->translation);
 }
 
 t_quat	*quat_create_empty(t_quat *out)
 {
+	static const float	default_vec[3] = {0, 0, 1};
 	t_quat	*ret;
 
 	ret = out;
@@ -87,6 +94,7 @@ t_quat	*quat_create_empty(t_quat *out)
 	ft_memclear(ret, sizeof(t_quat));
 	__mtx_fill_identity_f(4, (float *)ret->__rot_arr);
 	__setup_quat(ret);
+	_quat_update(out, default_vec, 0);
 	return (ret);
 }
 
@@ -102,5 +110,14 @@ t_quat	*quat_create(float ang, float x, float y, float z)
 	q->uv[3] = z;
 	__setup_quat(q);
 	_quat_update(q, q->uv + 1, ang);
+	return (q);
+}
+
+t_quat	*quat_reset(t_quat *q)
+{
+	if (!q)
+		return (MTX_ERROR("missing input"));
+	__mtx_fill_zeros(q->rot_mtx);
+	__mtx_fill_identity_f(4, (float *)q->__rot_arr);
 	return (q);
 }

@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 16:53:46 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/01 03:20:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/22 06:01:51 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	*mtx_isvalid_broadcast_to_dot(t_mtx *m1, t_mtx *m2, t_mtx *out)
 	shapes_match = m1->shape[m1->ndims - 1] == m2->shape[0];
 	dtype_match = (m1->dtype == m2->dtype);
 	output_match = (out->shape[0] == m1->shape[0])
-	&& (out->shape[1] == m2->shape[1])
-		&& (out->dtype == mtx_dtype_out(m1, m2));
+		&& (out->shape[1] == m2->shape[1])
+			&& (out->dtype == mtx_dtype_out(m1, m2));
 	if (dtype_match && shapes_match && output_match)
 		return (mtx_malloc_swap(out));
 	else if (!shapes_match)
@@ -47,6 +47,6 @@ void	*mtx_isvalid_broadcast_to_dot(t_mtx *m1, t_mtx *m2, t_mtx *out)
 	else if (!dtype_match)
 		fperror("broadcast err: dtype  : (%s vs %s)", (m1->dtype == DTYPE_I)?"INT":"FLOAT", (m2->dtype == DTYPE_I)?"INT":"FLOAT");
 	else if (!output_match)
-		fperror("broadcast err: output : (%s vs %s)", (out->dtype == DTYPE_I)?"INT":"FLOAT", (mtx_dtype_out(m1, m2))?"INT":"FLOAT");
+		fperror("broadcast err: output : (%s vs %s)", (out->dtype == DTYPE_I)?"INT":"FLOAT", (mtx_dtype_out(m1, m2) == DTYPE_I)?"INT":"FLOAT");
 	return (NULL);
 }

@@ -24,6 +24,24 @@ void	__mtx_dotf_4x4_4x4(float *a, float *b, float *out)
 }
 
 // Not usable with view output
+void	__mtx_dotf_1x4_4x4(float *a, float *b, float *out)
+{
+	float	a0;
+	float	a1;
+	float	a2;
+	float	a3;
+
+	a0 = a[0];
+	a1 = a[1];
+	a2 = a[2];
+	a3 = a[3];
+	out[0] = a0 * b[0] + a1 * b[4] + a2 * b[8] + a3 * b[12];
+	out[1] = a0 * b[1] + a1 * b[5] + a2 * b[9] + a3 * b[13];
+	out[2] = a0 * b[2] + a1 * b[6] + a2 * b[10] + a3 * b[14];
+	out[3] = a0 * b[3] + a1 * b[7] + a2 * b[11] + a3 * b[15];
+}
+
+// Not usable with view output
 void	__mtx_dotf_nx4_4x4(int n, float *a, float *b, float *out)
 {
 	float	a0;

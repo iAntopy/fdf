@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 15:00:42 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/07/12 20:11:41 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/22 05:44:12 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,23 @@ t_mtx	*mtx_dot(t_mtx *a, t_mtx *b, t_mtx *out)
 {
 	t_mtx	*ret;
 	t_dopp	dop;
-	
+
+	printf("mtx_dot : entered \n");	
 	ret = out;
 	if ((out && !mtx_isvalid_broadcast_to_dot(a, b, out))
 		|| (!out && !mtx_isvalid_broadcast_dot(a, b)))
+	{
+		printf("Thats a big no no !\n");
 		return (MTX_ERROR("invalid broadcast"));
+	}
+	printf("mtx_dot : checking types \n");	
 	if (!mtx_isvalid_dtype(a->dtype) || !mtx_isvalid_dtype(b->dtype))
 		return (MTX_ERROR("invalid mtx dtype"));
 	if (!ret)
 		ret = mtx_create_empty(a->shape[0], b->shape[1], mtx_dtype_out(a, b));
 	if (!ret || !__mtx_init_dopp(&dop, a, b, ret))
 		return (MTX_ERROR("malloc error"));
+	printf("mtx_dot : ret valid \n");	
 //	printf("Current dopp :\n");
 //	mtx_print_dopp(&dop);
 	if (dop.is_pure)

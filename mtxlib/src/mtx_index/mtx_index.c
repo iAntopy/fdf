@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 03:34:33 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 04:08:00 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/22 02:05:32 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,51 @@ void	*_mtx_idx(void *arr, int *strides, int row, int col)
 
 void	*mtx_index(t_mtx *mtx, int row, int col)
 {
-	if (row < 0 || col < 0 || row >= mtx->shape[0] || col >= mtx->shape[1])
+//	if (row < 0 || col < 0 || row >= mtx->shape[0] || col >= mtx->shape[1])
+	if (!mtx_index_is_inbound(mtx, row, col))
 		return (MTX_ERROR("index out of bounds"));
 	return (_mtx_idx(_mtx_arr(mtx), mtx->strides, row, col));
 }
+/*
+void	_mtx_set_index_f(t_mtx *mtx, int row, int col, float value)
+{
+	float	*idx_p;
+
+	idx_p = (float *)_mtx_idx(_mtx_arr(mtx), mtx->strides, row, col);
+	*idx_p = value;
+}
+
+void	_mtx_set_index_i(t_mtx *mtx, int row, int col, int value)
+{
+	int	*idx_p;
+
+	idx_p = (int *)_mtx_idx(_mtx_arr(mtx), mtx->strides, row, col);
+	*idx_p = value;
+}
+
+void	mtx_set_index_f(t_mtx *mtx, int row, int col, float value)
+{
+	float	*idx_p;
+
+	idx_p = (float *)mtx_index(mtx, row, col);
+	if (!idx_p)
+	{
+		MTX_ERROR("index out of bounds");
+		return ;
+	}
+	*idx_p = value;
+}
+
+void	mtx_set_index_i(t_mtx *mtx, int row, int col, int value)
+{
+	int	*idx_p;
+
+	idx_p = (int *)mtx_index(mtx, row, col);
+	if (!idx_p)
+	{
+		MTX_ERROR("index out of bounds");
+		return ;
+	}
+	*idx_p = value;
+}
+*/
