@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/23 16:57:52 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/24 21:58:09 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@
 # define SCN_MID_Y (SCN_HEIGHT / 2)
 
 # define WIN_TITLE "Fil de Fer"
-# define ISO_Y_THETA 0.785398163397
+# define ISO_Y_THETA 0.785398163397f
 //# define ISO_X_THETA 0.785398163397
-# define ISO_X_THETA 0.61547970867
+# define ISO_X_THETA 0.61547970867f
 
 //# define BG_COL 0x31176e
 # define BG_COL 0x0b1c5e
@@ -72,7 +72,7 @@ typedef struct	s_fdf_orthogonal_camera
 //	t_quat	*y_transform;
 //	t_quat	*z_transform;
 	t_mtx	__mtx_pool[3];
-	t_quat	__qpool;
+	t_quat	__qpool[1];
 	float	__pos_arr[4];
 	float	__base_arr[16];
 	float	__transform_arr[16];
@@ -109,7 +109,7 @@ void	camo_translate(t_camo *cam, float dx, float dy, float dz);
 void	camo_set_rotation(t_camo *cam, float rll, float ptc, float yaw);
 void	camo_look_at(t_camo *cam, t_mtx *pos);
 void	camo_look_at_coord(t_camo *cam, float x, float y, float z);
-
+void	camo_apply_transform(t_camo *cam, t_fmap *model, t_mtx *b, t_mtx *s);
 
 // ERROR HANDLING
 

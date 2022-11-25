@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/07 16:28:07 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/22 18:52:30 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/23 20:53:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	__quat_combine(float *q1, float *q2, t_quat *out)
 	out->uv[1] = o[1] / a;
 	out->uv[2] = o[2] / a;
 	out->uv[3] = o[3] / a;
-	printf("__quat_combine : combined out->uv : (%f, %f, %f)\n", out->uv[0], out->uv[1], out->uv[2]);
+//	printf("__quat_combine : combined out->uv : (%f, %f, %f)\n", out->uv[0], out->uv[1], out->uv[2]);
 }
 /*
 // Works inplace. w1 = q2->q[0]

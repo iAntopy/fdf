@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 18:31:38 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 22:02:15 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/23 20:55:59 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_quat	*_quat_translation_set(t_quat *q, float x, float y, float z)
 
 	if (!q)
 		return (MTX_ERROR("missing quaternion"));
-	_tr = (float *)_mtx_arr(q->translation);
+//	_tr = (float *)_mtx_arr(q->translation);
+	_tr = (float *)q->__rot_arr + 12;
 	*(_tr++) = x;
 	*(_tr++) = y;
 	*(_tr++) = z;

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 06:08:14 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/23 17:08:50 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/24 22:26:35 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	draw_map(t_fdf *fdf)
 	int		coord1_i[2];
 	int		coord2_i[2];
 	
-	printf("DRAWING MAP !\n");
+//	printf("DRAWING MAP !\n");
 	map = &fdf->map;
 	y = -1;
 	while (++y < map->h)
@@ -153,13 +153,35 @@ static int	transform_and_scale_map_to_window(t_fmap *map)
 	return (0);
 }
 
+static int	update_map_no_cam(t_fdf *fdf)
+{
+	_quat_translation_set(fdf->map.transform, SCN_MID_X, SCN_MID_Y, 0);
+	quat_display_info(fdf->map.transform);
+	quat_rotate(fdf->map.coords, fdf->map.transform, fdf->map.screen_coords);
+	mlx_set_bg_color(&fdf->mlx, fdf->bg_col);
+	draw_map(fdf);
+	mlx_render_buffer(&fdf->mlx);
+	return (0);
+}
+
+static int	update_map(t_fdf *fdf)
+{
+	mlx_set_bg_color(&fdf->mlx, fdf->bg_col);
+	camo_apply_transform(&fdf->cam, &fdf->map, fdf->map.coords, fdf->map.screen_coords);
+	printf("update map : coords after cam transform\n");
+	mtx_print(fdf->map.screen_coords);
+	draw_map(fdf);
+	mlx_render_buffer(&fdf->mlx);
+	return (0);
+}
+/*
 static int	update_map(t_fdf *fdf)
 {
 	t_quat	final_transform;
 
 	printf("update map : entered. fdf %p, coords %p, screen_coords %p, scalars %p\n", fdf, fdf->map.coords, fdf->map.screen_coords, fdf->map.scalars);
 	quat_create_empty(&final_transform);
-	quat_combine(fdf->map.transform, fdf->cam.tansform, &final_transform);
+//	quat_combine(fdf->map.transform, fdf->cam.transform, &final_transform);
 //	_mtx_mulf_line_r(fdf->map.coords, fdf->map.scalars, fdf->map.screen_coords);
 	printf("update_map : final transform info\n");
 	quat_display_info(&final_transform);
@@ -187,13 +209,15 @@ static int	update_map(t_fdf *fdf)
 
 	return (0);	
 }
+*/
 
 int	on_scale_z_up(t_fdf *fdf)
 {
 	fdf->map.__scalars_arr[2] *= 1.05;
 	_mtx_imulf_line_r(fdf->map.coords, fdf->map.scalars);//, fdf->map.screen_coords);
 //	quat_iscale_xyz(fdf->map.transform, 1.0f, 1.0f, 1.05f);
-	update_map(fdf);
+	update_map_no_cam(fdf);
+//	update_map(fdf);
 	return (0);
 }
 
@@ -202,7 +226,8 @@ int	on_scale_z_down(t_fdf *fdf)
 	fdf->map.__scalars_arr[2] *= 0.95f;
 	_mtx_imulf_line_r(fdf->map.coords, fdf->map.scalars);//, fdf->map.screen_coords);
 //	quat_iscale_xyz(fdf->map.transform, 1.0f, 1.0f, 0.95f);
-	update_map(fdf);
+	update_map_no_cam(fdf);
+//	update_map(fdf);
 	return (0);
 }
 
@@ -212,7 +237,8 @@ int	on_rotate_y(t_fdf *fdf, float delta)
 	quat_add(fdf->map.transform, 0, delta, 0);
 //	quat_twist(fdf->map.y_transform, 0.1);
 //	quat_combine(fdf->map.y_transform, fdf->map.x_transform, fdf->map.transform);
-	update_map(fdf);
+	update_map_no_cam(fdf);
+//	update_map(fdf);
 	return (0);
 }
 
@@ -222,7 +248,8 @@ int	on_rotate_x(t_fdf *fdf, float delta)
 //	quat_twist(fdf->map.x_transform, 0.1);
 	quat_add(fdf->map.transform, delta, 0, 0);
 //	quat_combine(fdf->map.y_transform, fdf->map.x_transform, fdf->map.transform);
-	update_map(fdf);
+	update_map_no_cam(fdf);
+//	update_map(fdf);
 	return (0);
 }
 
@@ -245,7 +272,8 @@ static void	switch_ctrl_mode(t_fdf *fdf)
 		fdf->bg_col = BG_COL;
 		mlx_key_hook(fdf->mlx.win, fdf_modelmode_key_switch, fdf);
 	}
-	update_map(fdf);
+	update_map_no_cam(fdf);
+//	update_map(fdf);
 }
 
 int	fdf_modelmode_key_switch(int key, void *fdf_p)
@@ -258,13 +286,13 @@ int	fdf_modelmode_key_switch(int key, void *fdf_p)
 		on_scale_z_up(fdf);
 	else if (key == KC_Down)
 		on_scale_z_down(fdf);
-	else if (key == KC_a)
+	else if (key == KC_a || key == KC_A)
 		on_rotate_y(fdf, 0.1);
-	else if (key == KC_d)
+	else if (key == KC_d || key == KC_D)
 		on_rotate_y(fdf, -0.1);
-	else if (key == KC_w)
+	else if (key == KC_w || key == KC_W)
 		on_rotate_x(fdf, -0.1);
-	else if (key == KC_s)
+	else if (key == KC_s || key == KC_S)
 		on_rotate_x(fdf, 0.1);
 	else if (key == KC_Delete)
 		pause_anime_on_off(fdf);
@@ -281,26 +309,26 @@ int	fdf_cammode_key_switch(int key, void *fdf_p)
 
 	fdf = (t_fdf *)fdf_p;
 	printf("CAM MODE KEY SWITCH : keycode %d\n", key);
-	if (key == KC_w)
+	if (key == KC_w || key == KC_W)
 		camo_rotate(&fdf->cam, 0.01, 0, 0);
-	else if (key == KC_s)
+	else if (key == KC_s || key == KC_S)
 		camo_rotate(&fdf->cam, -0.01, 0, 0);
-	else if (key == KC_a)
+	else if (key == KC_a || key == KC_A)
 		camo_rotate(&fdf->cam, 0, 0.01, 0);
-	else if (key == KC_d)
+	else if (key == KC_d || key == KC_D)
 		camo_rotate(&fdf->cam, 0, -0.01, 0);
-	else if (key == KC_q)
+	else if (key == KC_q || key == KC_Q)
 		camo_rotate(&fdf->cam, 0, 0, 0.01);
-	else if (key == KC_e)
+	else if (key == KC_e || key == KC_E)
 		camo_rotate(&fdf->cam, 0, 0, -0.01);
 	else if (key == KC_Up)
-		camo_translate(&fdf->cam, 1, 0, 0);
+		camo_move(&fdf->cam, 1, 0, 0);
 	else if (key == KC_Down)
-		camo_translate(&fdf->cam, -1, 0, 0);
+		camo_move(&fdf->cam, -1, 0, 0);
 	else if (key == KC_Left)
-		camo_translate(&fdf->cam, 0, 1, 0);
+		camo_move(&fdf->cam, 0, 1, 0);
 	else if (key == KC_Right)
-		camo_translate(&fdf->cam, 0, -1, 0);
+		camo_move(&fdf->cam, 0, -1, 0);
 	else if (key == KC_Delete)
 		pause_anime_on_off(fdf);
 	else if (key == KC_Space)
@@ -320,14 +348,16 @@ int	on_update(void *fdf_p)
 	usleep(30000);
 	if (fdf->is_animation_active)
 		on_rotate_y(fdf, 0.01);
+	update_map_no_cam(fdf);
 //	update_map(fdf);
 	return (0);
 }
 
 int	main(int argc, char **argv)
 {
+//	static const float	init_cam_pos[3] = {SCN_MID_X, SCN_MID_Y, 0};
 	static const float	init_cam_pos[3] = {0, 0, 0};
-	static const float	init_cam_thetas[3] = {0, M_PI / 4, 0};
+	static const float	init_cam_thetas[3] = {0, 0, 0};
 	t_fdf	fdf;
 
 	if (argc < 2)
@@ -335,7 +365,6 @@ int	main(int argc, char **argv)
 	ft_memclear(&fdf, sizeof(t_fdf));
 	if (fdf_load_map(argv[1], &fdf.map) < 0)
 		return (2);
-//	return (0);
 	if (!mlx_init_double_buff_window(&fdf.mlx, 
 			SCN_WIDTH, SCN_HEIGHT, WIN_TITLE))
 		return (fdf_clear(&fdf, 3));
@@ -350,6 +379,7 @@ int	main(int argc, char **argv)
 	camo_init(&fdf.cam, init_cam_pos, init_cam_thetas);
 	printf("hook onclose DONE\n");
 	update_map(&fdf);
+//	update_map_no_cam(&fdf);
 //	mlx_loop_hook(fdf.mlx.conn, on_update, &fdf);	
 	mlx_loop(fdf.mlx.conn);	
 	printf("mlx loop dead\n");
