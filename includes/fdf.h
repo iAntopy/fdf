@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/24 21:58:09 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/25 18:42:17 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,18 @@ typedef struct	s_fdf_orthogonal_camera
 	float	ortho_ratio_y;
 	float	ortho_ratio_z;
 }	t_camo;
+
+typedef struct	s_viewport
+{
+	t_mlx	*mlx;
+	int		ox;
+	int		oy;
+	int		w;
+	int		h;
+	float	rev_ortho_ratio_x;
+	float	rev_ortho_ratio_y;
+	float	rev_ortho_ratio_z;
+}
 
 typedef struct	s_fdf_data
 {
