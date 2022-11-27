@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 17:32:17 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/21 20:01:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/26 04:26:19 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	mlx_buff_put_pixel(t_img *img, int x, int y, int col);
 void	mlx_draw_line(t_mlx *mlx, int start[2], int end[2], int col);
 void	mlx_clear_buffer(t_mlx *mlx);
 void	mlx_set_bg_color(t_mlx *mlx, int col);
+void	mlx_fill_color_region(t_mlx *mlx, int start[2], int end[2], int col);
 int		mlx_render_buffer(t_mlx *mlx);
 void	mlx_close(t_mlx *mlx);
 void	mlx_get_info(t_mlx *mlx);

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 21:07:52 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/24 22:31:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/27 06:30:26 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,14 @@ static int	camo_update_transform(t_camo *cam)
 {
 	if (!cam || !cam->base_projection || !cam->rot || !cam->transform)
 		return (-1);
-	quat_rotate(cam->base_projection, cam->rot, cam->transform);
+
+	printf("camo update : base proj : \n");
+	mtx_print(cam->base_projection);
+	printf("camo update : rotation quaternion : \n");
+	quat_display_info(cam->rot);
+//	__mtx_dotf_4x4_4x4((float *)cam->rot->__rot_arr, (float *)cam->__base_arr, (float *)cam->__transform_arr);
+	__mtx_dotf_4x4_4x4((float *)cam->__base_arr, (float *)cam->rot->__rot_arr, (float *)cam->__transform_arr);
+//	quat_rotate(cam->base_projection, cam->rot, cam->transform);
 	return (0);
 }
 
@@ -37,9 +44,9 @@ static void	camo_update_base_projection(t_camo *cam, int update_transform)
 	arr[0] = rx;
 	arr[5] = ry;
 	arr[10] = rz;
-	arr[12] = rx * -cam->__pos_arr[0];
-	arr[13] = ry * -cam->__pos_arr[1];
-	arr[14] = rz * -cam->__pos_arr[2];
+//	arr[12] = rx;// * -cam->__pos_arr[0];
+//	arr[13] = ry;// * -cam->__pos_arr[1];
+//	arr[14] = rz;// * -cam->__pos_arr[2];
 	arr[15] = 1;
 	if (update_transform)
 		camo_update_transform(cam);
@@ -51,6 +58,11 @@ static void	camo_update_rotation(t_camo *cam, int update_transform)
 {
 	quat_reset(cam->rot);
 	quat_add(cam->rot, -cam->thetas[0], -cam->thetas[1], -cam->thetas[2]);
+	_quat_translation_set(cam->rot,
+		-cam->__pos_arr[0] * cam->ortho_ratio_x,
+		-cam->__pos_arr[1] * cam->ortho_ratio_y,
+		-cam->__pos_arr[2] * cam->ortho_ratio_z);
+//	_quat_translation_set(cam->rot, -cam->__pos_arr[0], cam->__pos_arr[1], cam->__pos_arr[2]);
 	if (update_transform)
 		camo_update_transform(cam);
 }
@@ -65,15 +77,17 @@ int	camo_update(t_camo *cam)
 }
 
 // Orthogonal camera utils
-int	camo_init(t_camo *cam, const float *init_pos, const float *init_thetas)
+int	camo_init(t_camo *cam, const float *init_pos, const float *dims, const float *init_thetas)
 {
 	printf("camo init : entered\n");
 	if (!cam)
 		return (-1);
 	printf("camo init : checked\n");
-	cam->ortho_ratio_x = 2.0f / SCN_WIDTH;
-	cam->ortho_ratio_y = 2.0f / SCN_HEIGHT;
-	cam->ortho_ratio_z = 2.0f / SCN_WIDTH;
+	cam->dimentions[0] = dims[0];
+	cam->dimentions[1] = dims[1];
+	cam->ortho_ratio_x = 2.0f / dims[0];//SCN_WIDTH;
+	cam->ortho_ratio_y = 2.0f / dims[1];//SCN_HEIGHT;
+	cam->ortho_ratio_z = 2.0f / dims[1];//SCN_WIDTH;
 	
 	printf("camo init : checked 2\n");
 	cam->transform = cam->__mtx_pool;
@@ -135,7 +149,8 @@ void	camo_move(t_camo *cam, float dx, float dy, float dz)
 	cam->__pos_arr[0] += dx;
 	cam->__pos_arr[1] += dy;
 	cam->__pos_arr[2] += dz;
-	camo_update_base_projection(cam, 1);
+	printf("new cam position : (%f, %f, %f)\n", cam->__pos_arr[0], cam->__pos_arr[1], cam->__pos_arr[2]);
+	camo_update_rotation(cam, 1);
 }
 
 // Changes camera state BUT DOES NOT UPDATE CAM TRANSFORM. Call cam_update() once
@@ -164,7 +179,9 @@ void	camo_set_position(t_camo *cam, float x, float y, float z)
 	cam->__pos_arr[0] = x;
 	cam->__pos_arr[1] = y;
 	cam->__pos_arr[2] = z;
-	camo_update_base_projection(cam, 1);
+	printf("new cam position : (%f, %f, %f)\n", cam->__pos_arr[0], cam->__pos_arr[1], cam->__pos_arr[2]);
+	camo_update_rotation(cam, 1);
+//	camo_update_base_projection(cam, 1);
 }
 
 void	camo_set_rotation(t_camo *cam, float rll, float ptc, float yaw)
@@ -180,6 +197,21 @@ void	camo_set_rotation(t_camo *cam, float rll, float ptc, float yaw)
 	camo_update_rotation(cam, 1);
 }
 
+void	camo_zoom(t_camo *cam, float factor)
+{
+	if (!cam)
+	{
+		ft_eprintf("fdf cam : missing input\n");
+		return ;
+	}
+	cam->dimentions[0] *= factor;
+	cam->dimentions[1] *= factor;
+	cam->ortho_ratio_x = 2.0f / cam->dimentions[0];//SCN_WIDTH;
+	cam->ortho_ratio_y = 2.0f / cam->dimentions[1];//SCN_HEIGHT;
+	cam->ortho_ratio_z = 2.0f / cam->dimentions[1];//SCN_WIDTH;
+	camo_update_base_projection(cam, 1);
+}
+/*
 // Combines the modelview matrix with cam transform then appies the
 // transform to b = base_coords, and outputs the result in s = screen_coords
 void	camo_apply_transform(t_camo *cam, t_fmap *model, t_mtx *b, t_mtx *s)
@@ -201,6 +233,7 @@ void	camo_apply_transform(t_camo *cam, t_fmap *model, t_mtx *b, t_mtx *s)
 
 	__mtx_dotf_nx4_4x4(model->w * model->h, (float *)b->arr, (float *)final_tf, (float *)s->arr);
 }
+*/
 /*
 
 void	camo_look_at(t_camo *cam, t_mtx *mtx)

@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 23:55:34 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/22 07:59:06 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/26 19:40:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_quat	*quat_create_empty(t_quat *out)
 	if (!ret && !ft_malloc_p(sizeof(t_quat), (void **)&ret))
 		return (MTX_ERROR("malloc error"));
 	ft_memclear(ret, sizeof(t_quat));
-	__mtx_fill_identity_f(4, (float *)ret->__rot_arr);
+//	__mtx_fill_identity_f(4, (float *)ret->__rot_arr);
 	__setup_quat(ret);
 	_quat_update(out, default_vec, 0);
 	return (ret);
@@ -115,9 +115,12 @@ t_quat	*quat_create(float ang, float x, float y, float z)
 
 t_quat	*quat_reset(t_quat *q)
 {
+	static const float	default_vec[3] = {0, 0, 1};
+	
 	if (!q)
 		return (MTX_ERROR("missing input"));
-	__mtx_fill_zeros(q->rot_mtx);
-	__mtx_fill_identity_f(4, (float *)q->__rot_arr);
+//	__mtx_fill_zeros(q->rot_mtx);
+//	__mtx_fill_identity_f(4, (float *)q->__rot_arr);
+	_quat_update(q, default_vec, 0);
 	return (q);
 }

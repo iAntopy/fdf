@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/25 18:42:17 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/27 05:42:40 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,30 @@
 
 typedef struct	s_fdf_map
 {
-	int		w;
-	int		h;
+	int	w;
+	int	h;
 	t_mtx	*coords;
 	t_mtx	*screen_coords;
-	t_mtx	*scalars;
 
-	t_quat	*transform;
-	t_quat	*y_transform;
-	t_quat	*x_transform;
-	t_quat	__qpool[3];
-	t_mtx	__scalars;
-	float	__scalars_arr[4];
-
+	t_mtx	*transform;
+	t_mtx	*scaling_tf;
+	t_quat	*rotation_tf;
+	float	pos[3];
+	float	scalars[3];
+	float	thetas[3];
+//	t_quat	*y_transform;
+//	t_quat	*x_transform;
+	t_mtx	__final_tf;
+	t_mtx	__scaling_tf;
+	t_quat	__rotation_tf;
+	float	__tf_arr[16];
+	float	__sc_arr[16];
 }	t_fmap;
 
 typedef struct	s_fdf_orthogonal_camera
 {
 	t_mtx	*pos;
+	float	dimentions[2];
 	float	thetas[3];
 	t_mtx	*transform;
 	t_quat	*rot;
@@ -84,23 +90,36 @@ typedef struct	s_fdf_orthogonal_camera
 typedef struct	s_viewport
 {
 	t_mlx	*mlx;
-	int		ox;
-	int		oy;
+	t_mtx	*transform;
 	int		w;
 	int		h;
-	float	rev_ortho_ratio_x;
-	float	rev_ortho_ratio_y;
-	float	rev_ortho_ratio_z;
-}
+	int		offset[2];
+	int		mid[2];
+	int		size[2];
+	int		limit[2];
+	float		ratio_x;
+	float		ratio_y;
+	t_mtx		__transform;
+	float		__t_arr[16];
+}	t_viewp;
 
 typedef struct	s_fdf_data
 {
-	t_mlx	mlx;
-	t_fmap	map;
-	t_camo	cam;
-	int	bg_col;
-	char	is_animation_active;
-	char	is_cam_ctrl_active;
+	t_mlx		mlx;
+	t_fmap		map;
+	t_fmap		beacon;
+	t_fmap		frame;
+	t_camo		cam1;
+	t_camo		cam2;
+	t_camo		cam3;
+	t_camo		cam4;
+	t_viewp		vp1;
+	t_viewp		vp2;
+	t_viewp		vp3;
+	t_viewp		vp4;
+	int		bg_col;
+	char		is_animation_active;
+	char		is_cam_ctrl_active;
 }	t_fdf;
 
 // FDF INIT
@@ -111,17 +130,32 @@ void	mlx_draw_line_z_shift(t_mlx *mlx, int start[3], int end[3]);
 int	fdf_modelmode_key_switch(int key, void *fdf_p);
 int	fdf_cammode_key_switch(int key, void *fdf_p);
 
+// FMAP TRANSFORM UTILS
+int	fmap_init(t_fmap *map, int width, int height);
+int	fmap_update(t_fmap *map);
+void	fmap_rotate(t_fmap *map, float rx, float ry, float rz);
+void	fmap_set_rotation(t_fmap *map, float rx, float ry, float rz);
+void	fmap_move(t_fmap *map, float dx, float dy, float dz);
+void	fmap_set_position(t_fmap *map, float x, float y, float z);
+void	fmap_scale(t_fmap *map, float sx, float sy, float sz);
+void	fmap_set_scale(t_fmap *map, float sx, float sy, float sz);
+
 // CAMERA CONTROLS
-int	camo_init(t_camo *cam, const float *init_pos, const float *init_thetas);
+int	camo_init(t_camo *cam, const float *init_pos, const float *dims, const float *init_thetas);
 int	camo_update(t_camo *cam);
 void	camo_move(t_camo *cam, float dx, float dy, float dz);
 void	camo_set_position(t_camo *cam, float x, float y, float z);
 void	camo_rotate(t_camo *cam, float rll, float ptc, float yaw);
 void	camo_translate(t_camo *cam, float dx, float dy, float dz);
 void	camo_set_rotation(t_camo *cam, float rll, float ptc, float yaw);
+void	camo_zoom(t_camo *cam, float factor);
 void	camo_look_at(t_camo *cam, t_mtx *pos);
 void	camo_look_at_coord(t_camo *cam, float x, float y, float z);
 void	camo_apply_transform(t_camo *cam, t_fmap *model, t_mtx *b, t_mtx *s);
+
+// VIEWPORT UTILS
+int	viewport_init(t_viewp *vp, const int pos[2], const int size[2]);
+int	viewport_apply_all_transforms(t_fmap *model, t_camo *cam, t_viewp *vp, t_mtx *scoords);
 
 // ERROR HANDLING
 

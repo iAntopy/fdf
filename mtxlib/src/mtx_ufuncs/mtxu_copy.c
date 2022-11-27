@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/26 22:35:05 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/22 18:06:12 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/27 05:30:24 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,19 @@ t_mtx	*mtx_dup_empty(t_mtx *mtx, t_mtx **out, int dtype)
 	if (!mtx_dup_struct(mtx, &new))
 		return (MTX_ERROR("malloc error"));
 	arr_size = mtx_sizeof_array(mtx);
-	printf("dup empty : new->arr before malloc : %p\n", new->arr);
+//	printf("dup empty : new->arr before malloc : %p\n", new->arr);
 	if (!malloc_free_p(arr_size, (void **)&(new->arr)))
 	{
 		mtx_clear(&new);
 		return (MTX_ERROR("malloc error "));
 	}
-	printf("dup empty : new->arr after malloc : %p\n", new->arr);
+//	printf("dup empty : new->arr after malloc : %p\n", new->arr);
 	new->dtype = dtype;
 	new->view_ptr = &(new->arr);
-	printf("dup empty : new->dtype, new->view_ptr : %d, %p\n", new->dtype, new->view_ptr);
+//	printf("dup empty : new->dtype, new->view_ptr : %d, %p\n", new->dtype, new->view_ptr);
 	if (out)
 		*out = new;
-	printf("dup empty : returning new\n");
+//	printf("dup empty : returning new\n");
 	return (new);
 }
 

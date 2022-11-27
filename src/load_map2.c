@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:24:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/21 02:42:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/27 05:42:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,28 @@ static int	map_clear_strtab(t_lst **map)
 	return (0);
 }
 
-static t_mtx	*convert_map_lst_to_mtx(t_fmap *fmap, t_lst *map_lst)
+static t_mtx	*convert_map_lst_to_mtx(t_fmap *fmap, int width, int height, t_lst *map_lst)
 {
 	int		i;
 	int		j;
 	t_lst	*row;
 	float	*data;
 
-	fmap->coords = mtx_create_empty(fmap->h * fmap->w, 4, DTYPE_F);
+	printf("map loader convert : entered. <width x height> : <%d x %d>\n", width, height);
+	fmap->coords = mtx_create_empty(width * height, 4, DTYPE_F);
+	printf("map loader convert : coords mtx created %p\n", fmap->coords);
 	if (!fmap->coords)
 		return (NULL);
 	row = map_lst;
 	j = -1;
-	while (row && ++j < fmap->h)
+	while (row && ++j < height)
 	{
 //		strtab_print((char **)row->content);
 //		printf("row strtab ptr : %p\n", row->content);
 		i = -1;
-		while (++i < fmap->w)
+		while (++i < width)
 		{
-			data = (float *)mtx_index(fmap->coords, j * fmap->w + i, 0);
+			data = (float *)mtx_index(fmap->coords, j * width + i, 0);
 			*data = i;
 			*(data + 1) = j;
 //			printf("loader : (x, y) = z : (%d, %d) = %d, content[i] : %s\n", i, j, ft_atoi(((char **)row->content)[i]), ((char **)row->content)[i]);
@@ -121,6 +123,8 @@ int	fdf_load_map(char *map_name, t_fmap *fmap)
 {
 	t_lst	*map_lst;
 	int		fd;
+	int		w;
+	int		h;
 
 	printf("load_map : entered. map_name : %s, fmap ptr : %p\n", map_name, fmap);
 	if (!map_name || !fmap)
@@ -133,25 +137,22 @@ int	fdf_load_map(char *map_name, t_fmap *fmap)
 		printf("load_map : file open failed %d\n", fd);
 		return (-1);
 	}
+	printf("map loader : gathering map\n");
 	if (gather_map_lines(fd, &map_lst) < 0)
 		return (map_clear_str(&map_lst) - 1);
 	close(fd);
-	fmap->w = split_validate(map_lst);;
-	if (fmap->w < 0)
+	printf("map loader : split validate\n");
+	w = split_validate(map_lst);
+	if (w < 0)
 		return (map_clear_strtab(&map_lst) - 1);
-	fmap->h = ft_lstsize(map_lst);
-	if (!convert_map_lst_to_mtx(fmap, map_lst))
+	h = ft_lstsize(map_lst);
+	printf("map loader : fmap init. <w x h> : <%d x %d>\n", w, h);
+	fmap_init(fmap, w, h);
+	printf("map loader : fmap init DONE\n");
+	if (!convert_map_lst_to_mtx(fmap, w, h, map_lst))
 		return (map_clear_strtab(&map_lst) - 1);
+	printf("map loader : about to copy coords\n");
 	fmap->screen_coords = mtx_copy(fmap->coords);
-	fmap->scalars = &fmap->__scalars;
-	fmap->__scalars.arr = fmap->__scalars_arr;
-	mtx_shell(fmap->scalars, 4, 1, DTYPE_F);
-	fmap->__scalars_arr[0] = 1;
-	fmap->__scalars_arr[1] = 1;
-	fmap->__scalars_arr[2] = 1;
-	fmap->__scalars_arr[3] = 1;
-	printf("loader : init scalars %p, arr %p\n", fmap->scalars, fmap->scalars->arr);
-	mtx_print(fmap->scalars);
 	return (map_clear_strtab(&map_lst));
 }
 /*

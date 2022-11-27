@@ -6,16 +6,17 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 21:55:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/22 08:44:22 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/27 05:50:48 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
 
-static int	pixel_is_inbound(t_mlx *mlx, int x, int y)
+static int	pixel_is_inbound(t_mlx *mlx, int x, int y, int z)
 {
-	return ((x >= 0) && (y >=0) && (x < mlx->width) && (y < mlx->height));
+	return ((x >= 0) && (y >=0) && (x < mlx->width) && (y < mlx->height)
+		&& (z >= 0));
 }
 
 static int	pixel_is_bg_color(t_mlx *mlx, int x, int y)
@@ -50,7 +51,7 @@ static int	z_color_shift(int dx, int dy, int ds[3])
 		ratio = ((float)dx / ds[0] + (float)dy / ds[1]) / 2;
 	if (ratio < 0)
 		ratio = 0;
-	else if (ratio > 1)
+	else if (ratio >= 1)
 		ratio = 1.0f;
 	if (ds[2] < 0)
 	{
@@ -92,7 +93,8 @@ static void	draw_line_low(t_mlx *mlx, int *lims[2], int ds[3])
 	dy_min_dx = ds[1] - ds[0];
 	while (++x < lims[1][0])
 	{
-		if (pixel_is_inbound(mlx, x, y) && pixel_is_bg_color(mlx, x, y))
+//		if (pixel_is_inbound(mlx, x, y, (int)((float)x - lims[0][0]) / ds[0] * ds[2] + lims[0][2]) && pixel_is_bg_color(mlx, x, y))
+		if (pixel_is_inbound(mlx, x, y, 1) && pixel_is_bg_color(mlx, x, y))
 //		if (pixel_is_inbound(mlx, x, y))			// TODO : MOVE CLIPPING OUTSIDE DRAW CALL.
 			mlx_buff_put_pixel(mlx->off_buff, x, y,
 				z_color_shift(x - lims[0][0], y - lims[0][1], ds));
@@ -122,7 +124,8 @@ static void	draw_line_high(t_mlx *mlx, int *lims[2], int ds[3])
 	dx_min_dy = ds[0] - ds[1];
 	while (++y < lims[1][1])
 	{
-		if (pixel_is_inbound(mlx, x, y) && pixel_is_bg_color(mlx, x, y))
+//		if (pixel_is_inbound(mlx, x, y, (int)((float)y - lims[0][1]) / ds[1] * ds[2] + lims[0][2]) && pixel_is_bg_color(mlx, x, y))
+		if (pixel_is_inbound(mlx, x, y, 1) && pixel_is_bg_color(mlx, x, y))
 			mlx_buff_put_pixel(mlx->off_buff, x, y,
 				z_color_shift(x - lims[0][0], y - lims[0][1], ds));
 		if (D > 0)
