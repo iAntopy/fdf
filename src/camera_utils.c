@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 21:07:52 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/27 06:30:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/28 05:34:35 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ static int	camo_update_transform(t_camo *cam)
 	if (!cam || !cam->base_projection || !cam->rot || !cam->transform)
 		return (-1);
 
-	printf("camo update : base proj : \n");
-	mtx_print(cam->base_projection);
-	printf("camo update : rotation quaternion : \n");
-	quat_display_info(cam->rot);
+//	printf("camo update : base proj : \n");
+//	mtx_print(cam->base_projection);
+//	printf("camo update : rotation quaternion : \n");
+//	quat_display_info(cam->rot);
 //	__mtx_dotf_4x4_4x4((float *)cam->rot->__rot_arr, (float *)cam->__base_arr, (float *)cam->__transform_arr);
 	__mtx_dotf_4x4_4x4((float *)cam->__base_arr, (float *)cam->rot->__rot_arr, (float *)cam->__transform_arr);
 //	quat_rotate(cam->base_projection, cam->rot, cam->transform);
@@ -56,12 +56,17 @@ static void	camo_update_base_projection(t_camo *cam, int update_transform)
 // the orientation changes in any direction.
 static void	camo_update_rotation(t_camo *cam, int update_transform)
 {
-	quat_reset(cam->rot);
-	quat_add(cam->rot, -cam->thetas[0], -cam->thetas[1], -cam->thetas[2]);
-	_quat_translation_set(cam->rot,
-		-cam->__pos_arr[0] * cam->ortho_ratio_x,
-		-cam->__pos_arr[1] * cam->ortho_ratio_y,
-		-cam->__pos_arr[2] * cam->ortho_ratio_z);
+	__mtx_rotation_matrix_YXZ(-cam->thetas[0], -cam->thetas[1], -cam->thetas[2], (float *)cam->rot->arr);
+	// EXTREMLY UNFINISHED. LETS GO !
+
+
+
+//	quat_reset(cam->rot);
+//	quat_add(cam->rot, -cam->thetas[0], -cam->thetas[1], -cam->thetas[2]);
+//	_quat_translation_set(cam->rot,
+//		-cam->__pos_arr[0] * cam->ortho_ratio_x,
+//		-cam->__pos_arr[1] * cam->ortho_ratio_y,
+//		-cam->__pos_arr[2] * cam->ortho_ratio_z);
 //	_quat_translation_set(cam->rot, -cam->__pos_arr[0], cam->__pos_arr[1], cam->__pos_arr[2]);
 	if (update_transform)
 		camo_update_transform(cam);

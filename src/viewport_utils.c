@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 22:31:54 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/27 05:54:26 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/27 17:42:27 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,27 @@ int	viewport_init(t_viewp *vp, const int pos[2], const int size[2])
 	return (0);
 }
 
+static void	viewport_clip_screen_coords(t_viewp *vp, t_mtx *scoords)
+{
+	int	i;
+	void	*arr;
+	int	*strides;
+	float	*row;
+
+	arr = _mtx_arr(scoords);
+	strides = scoords->strides;
+	i = -1;
+	while (++i < scoords->shape[0])
+	{
+		row = (float *)_mtx_idx(arr, strides, i, 0);
+
+		row[0] -= (row[0] - vp->offset[0] - 1) * (row[0] < vp->offset[0]);
+		row[0] -= (row[0] - vp->limit[0] - 1) * (row[0] > vp->limit[0]);
+		row[1] -= (row[1] - vp->offset[1] - 1) * (row[1] < vp->offset[1]);
+		row[1] -= (row[1] - vp->limit[1] - 1) * (row[1] > vp->limit[1]);
+	}
+}
+
 int	viewport_apply_all_transforms(t_fmap *model, t_camo *cam, t_viewp *vp, t_mtx *scoords)
 {
 	float	model_cam_tf[4][4];
@@ -76,6 +97,8 @@ int	viewport_apply_all_transforms(t_fmap *model, t_camo *cam, t_viewp *vp, t_mtx
 
 //	printf("viewp apply all : first row before final tf apply : [%f, %f, %f, %f]\n", ((float *)scoords->arr)[0], ((float *)scoords->arr)[1], ((float *)scoords->arr)[2], ((float *)scoords->arr)[3]);
 	__mtx_dotf_nx4_4x4(model->w * model->h, (float *)model->coords->arr, (float *)final_tf, (float *)scoords->arr);
+
+	viewport_clip_screen_coords(vp, scoords);
 //	printf("viewp apply all : first row after final tf apply : [%f, %f, %f, %f]\n", ((float *)scoords->arr)[0], ((float *)scoords->arr)[1], ((float *)scoords->arr)[2], ((float *)scoords->arr)[3]);
 
 /*

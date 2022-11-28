@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 06:08:14 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/27 05:59:24 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/27 17:06:34 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -454,10 +454,13 @@ int	on_update(void *fdf_p)
 	fdf = (t_fdf *)fdf_p;
 	usleep(30000);
 	if (fdf->is_animation_active)
+	{
 		fmap_rotate(&fdf->map, 0.01, 0, 0);
+		camo_rotate(&fdf->cam2, 0, 0.01f, 0);
+		update_map(fdf, 1);
 //		on_rotate_y(fdf, 0.01);
-//	update_map_no_cam(fdf);
-	update_map(fdf, 1);
+//		update_map_no_cam(fdf);
+	}	
 	return (0);
 }
 
