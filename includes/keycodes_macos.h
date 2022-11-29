@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 19:07:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/23 19:38:02 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/28 19:40:38 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ enum {
   KC_KP_9              = 0x5C
 };
 
-enum {
+enum e_duplicates{
   KC_a                    = 0x00,
   KC_s                    = 0x01,
   KC_d                    = 0x02,
@@ -121,7 +121,9 @@ enum {
   KC_j                    = 0x26,
   KC_k                    = 0x28,
   KC_n                    = 0x2D,
-  KC_m                    = 0x2E
+  KC_m                    = 0x2E,
+  KC_Return               = 0x24,
+  KC_KP_Return            = 0x4C
 };
 
 /* keycodes for keys that are independent of keyboard layout*/

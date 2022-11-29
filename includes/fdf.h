@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/27 05:42:40 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/29 00:19:16 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # define SCN_HEIGHT 680
 # define SCN_MID_X (SCN_WIDTH / 2)
 # define SCN_MID_Y (SCN_HEIGHT / 2)
+# define ASPECT_RATIO (SCN_WIDTH / SCN_HEIGHT) 
+# define VERT_FOV (M_PI / 2)
 
 # define WIN_TITLE "Fil de Fer"
 # define ISO_Y_THETA 0.785398163397f
@@ -73,6 +75,7 @@ typedef struct	s_fdf_orthogonal_camera
 	float	thetas[3];
 	t_mtx	*transform;
 	t_quat	*rot;
+//	float	rot[16];
 	t_mtx	*base_projection;
 //	t_quat	*x_transform;
 //	t_quat	*y_transform;
@@ -85,6 +88,9 @@ typedef struct	s_fdf_orthogonal_camera
 	float	ortho_ratio_x;
 	float	ortho_ratio_y;
 	float	ortho_ratio_z;
+	float	persp_ratio_x;
+	float	pspct_ratio_y;
+	float	pspct_ratio_z;
 }	t_camo;
 
 typedef struct	s_viewport
@@ -117,10 +123,16 @@ typedef struct	s_fdf_data
 	t_viewp		vp2;
 	t_viewp		vp3;
 	t_viewp		vp4;
-	int		bg_col;
+	int			bg_col;
 	char		is_animation_active;
 	char		is_cam_ctrl_active;
 }	t_fdf;
+
+enum	e_cam_types
+{
+	CAM_ORTHO,
+	CAM_PERSPECTIVE
+}
 
 // FDF INIT
 int	fdf_load_map(char *map_name, t_fmap *map);
@@ -141,8 +153,8 @@ void	fmap_scale(t_fmap *map, float sx, float sy, float sz);
 void	fmap_set_scale(t_fmap *map, float sx, float sy, float sz);
 
 // CAMERA CONTROLS
-int	camo_init(t_camo *cam, const float *init_pos, const float *dims, const float *init_thetas);
-int	camo_update(t_camo *cam);
+int		camo_init(t_camo *cam, const float *init_pos, const float *dims, const float *init_thetas);
+int		camo_update(t_camo *cam);
 void	camo_move(t_camo *cam, float dx, float dy, float dz);
 void	camo_set_position(t_camo *cam, float x, float y, float z);
 void	camo_rotate(t_camo *cam, float rll, float ptc, float yaw);

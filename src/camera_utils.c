@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 21:07:52 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/28 05:34:35 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/29 00:19:15 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	camo_update_transform(t_camo *cam)
 
 // base projection holds the camera position translation data
 // Call this function anytime the camera position changes.
-static void	camo_update_base_projection(t_camo *cam, int update_transform)
+static void	camo_update_ortho_projection(t_camo *cam, int update_transform)
 {
 	float	rx;
 	float	ry;
@@ -44,30 +44,54 @@ static void	camo_update_base_projection(t_camo *cam, int update_transform)
 	arr[0] = rx;
 	arr[5] = ry;
 	arr[10] = rz;
-//	arr[12] = rx;// * -cam->__pos_arr[0];
-//	arr[13] = ry;// * -cam->__pos_arr[1];
-//	arr[14] = rz;// * -cam->__pos_arr[2];
+	arr[12] = rx * -cam->__pos_arr[0];
+	arr[13] = ry * -cam->__pos_arr[1];
+	arr[14] = rz * -cam->__pos_arr[2];
 	arr[15] = 1;
 	if (update_transform)
 		camo_update_transform(cam);
+}
+
+static void	camo_init_perspective_projection(t_camo *cam, int update_transform)
+{
+	float	*arr;
+
+	arr = cam->__base_arr;
+	arr[0] = cam->pspct_ratio_x;
+	arr[5] = cam->pspct_ratio_y;
+	arr[10] = cam->pspct_ratio_z1;
+	arr[11] = 1;
+	arr[14] = cam->pspct_ratio_z2;
+}
+
+static void	camo_update_position(t_camo *cam)
+{
+	float	*rot;
+	float	*pos;
+	float	*rpos;
+
+	rot = (float *)cam->rot->arr;
+	rpos = rot + 12;
+	pos = cam->__pos_arr;
+	rot[12] = pos[0] * rot[0] + pos[1] * rot[4] + pos[2] * rot[8];
+	rot[13] = pos[0] * rot[1] + pos[1] * rot[5] + pos[2] * rot[9];
+	rot[14] = pos[0] * rot[2] + pos[1] * rot[6] + pos[2] * rot[10];
 }
 
 // Holds the rotation transformation data. Call this function anytime
 // the orientation changes in any direction.
 static void	camo_update_rotation(t_camo *cam, int update_transform)
 {
-	__mtx_rotation_matrix_YXZ(-cam->thetas[0], -cam->thetas[1], -cam->thetas[2], (float *)cam->rot->arr);
-	// EXTREMLY UNFINISHED. LETS GO !
+	__mtx_rotation_matrix_YXZ(-cam->thetas[0], -cam->thetas[1], -cam->thetas[2], rot);
+	camo_update_position(cam);
 
-
-
-//	quat_reset(cam->rot);
+///	quat_reset(cam->rot);
 //	quat_add(cam->rot, -cam->thetas[0], -cam->thetas[1], -cam->thetas[2]);
-//	_quat_translation_set(cam->rot,
+///	_quat_translation_set(cam->rot,
 //		-cam->__pos_arr[0] * cam->ortho_ratio_x,
 //		-cam->__pos_arr[1] * cam->ortho_ratio_y,
-//		-cam->__pos_arr[2] * cam->ortho_ratio_z);
-//	_quat_translation_set(cam->rot, -cam->__pos_arr[0], cam->__pos_arr[1], cam->__pos_arr[2]);
+///		-cam->__pos_arr[2] * cam->ortho_ratio_z);
+///	_quat_translation_set(cam->rot, -cam->__pos_arr[0], cam->__pos_arr[1], cam->__pos_arr[2]);
 	if (update_transform)
 		camo_update_transform(cam);
 }
@@ -82,19 +106,13 @@ int	camo_update(t_camo *cam)
 }
 
 // Orthogonal camera utils
-int	camo_init(t_camo *cam, const float *init_pos, const float *dims, const float *init_thetas)
+int	camo_init(t_camo *cam, const float *init_pos, const float *dims,
+	   			const float farnear[2], const float *init_thetas, int cam_type)
 {
 	printf("camo init : entered\n");
 	if (!cam)
 		return (-1);
 	printf("camo init : checked\n");
-	cam->dimentions[0] = dims[0];
-	cam->dimentions[1] = dims[1];
-	cam->ortho_ratio_x = 2.0f / dims[0];//SCN_WIDTH;
-	cam->ortho_ratio_y = 2.0f / dims[1];//SCN_HEIGHT;
-	cam->ortho_ratio_z = 2.0f / dims[1];//SCN_WIDTH;
-	
-	printf("camo init : checked 2\n");
 	cam->transform = cam->__mtx_pool;
 	cam->base_projection = cam->__mtx_pool + 1;
 	cam->pos = cam->__mtx_pool + 2;
@@ -126,6 +144,25 @@ int	camo_init(t_camo *cam, const float *init_pos, const float *dims, const float
 		cam->thetas[2] = init_thetas[2];
 	//	quat_add(cam->transform, -init_thetas[0], -init_thetas[1], -init_thetas[2]);
 	}
+	if (cam_type == CAM_ORTHO)
+	{
+		cam->dimentions[0] = dims[0];
+		cam->dimentions[1] = dims[1];
+	
+		cam->ortho_ratio_x = 2.0f / dims[0];//SCN_WIDTH;
+		cam->ortho_ratio_y = 2.0f / dims[1];//SCN_HEIGHT;
+		cam->ortho_ratio_z = 1.0f / dims[1];//SCN_WIDTH;
+		camo_init_ortho_projection(cam);
+	}
+	else if (cam_type == CAM_PERSPECTIVE)
+	{
+		cam->pspct_ratio_x = 1 / (ASPECT_RATIO * tan(VERT_FOV / 2));
+		cam->pspct_ratio_y = 1 / (tan(VERT_FOV / 2));
+		cam->pspct_ratio_z1 = farnear[0] / (farnear[0] - farnear[1]);
+		cam->pspct_ratio_z2 = -n * cam->pspct_ratio_z1;
+		camo_init_perspective_projection(cam);
+	}
+
 	printf("camo init : ortho ratios x y z : %f, %f, %f\n", cam->ortho_ratio_x, cam->ortho_ratio_y, cam->ortho_ratio_z);
 	printf("camo init : init pos and thetas setup\n");
 	printf("camo init : before cam update\n");
@@ -137,8 +174,7 @@ int	camo_init(t_camo *cam, const float *init_pos, const float *dims, const float
 	printf("cam init : rotation quaternion info :\n");
 	quat_display_info(cam->rot);
 	printf("camo init : after cam update\n");
-//	quat_rotate(cam->pos, cam->transform, cam->transform->translation);
-//	mtx_set_index_f(cam->transform->translation, 3, 0, 1.0f);
+
 	return (0);
 }
 
