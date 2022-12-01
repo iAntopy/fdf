@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 17:44:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/27 05:41:30 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/29 06:06:23 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	fmap_init(t_fmap *map, int width, int height)
 	map->transform = &map->__final_tf;
 	map->scaling_tf = &map->__scaling_tf;
 	map->rotation_tf = &map->__rotation_tf;
+	map->homogenious_vect = &map->__homogenious_vect;
 
 	map->transform->arr = map->__tf_arr;
 	map->scaling_tf->arr = map->__sc_arr;

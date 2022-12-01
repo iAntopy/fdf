@@ -6,6 +6,7 @@ _SRCS		= 	fdf_main.c	\
 			fdf_map_utils.c	\
 			camera_utils.c	\
 			viewport_utils.c	\
+			mouse_events_handlers.c	\
 			mlx_draw_line_z_shift.c
 
 INCLS		= includes/

@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 22:31:54 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/27 17:42:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:14:31 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	viewport_init(t_viewp *vp, const int pos[2], const int size[2])
 	return (0);
 }
 
+/*
 static void	viewport_clip_screen_coords(t_viewp *vp, t_mtx *scoords)
 {
 	int	i;
@@ -71,7 +72,7 @@ static void	viewport_clip_screen_coords(t_viewp *vp, t_mtx *scoords)
 		row[1] -= (row[1] - vp->limit[1] - 1) * (row[1] > vp->limit[1]);
 	}
 }
-
+*/
 int	viewport_apply_all_transforms(t_fmap *model, t_camo *cam, t_viewp *vp, t_mtx *scoords)
 {
 	float	model_cam_tf[4][4];
@@ -87,18 +88,31 @@ int	viewport_apply_all_transforms(t_fmap *model, t_camo *cam, t_viewp *vp, t_mtx
 //	printf("viewp apply all : model to cam matrix before dot:\n");
 //	mtx_print(&DELETE_ME);
 	__mtx_dotf_4x4_4x4((float *)model->transform->arr, (float *)cam->transform->arr, (float *)model_cam_tf);
+//	printf("viewp apply all : model transform :\n");
+//	mtx_print(model->transform);
+//	printf("viewp apply all : cam transform :\n");
+//	mtx_print(cam->transform);
 //	printf("viewp apply all : model to cam matrix after dot:\n");
 //	mtx_print(&DELETE_ME);
+//	printf("viewp apply all : viewport transform :\n");
+//	mtx_print(vp->transform);
 
 	__mtx_dotf_4x4_4x4((float *)model_cam_tf, (float *)vp->transform->arr, (float *)final_tf);
-//	DELETE_ME.arr = (float *)final_tf;
+	DELETE_ME.arr = (float *)final_tf;
 //	printf("viewp apply all : tf2 cam to viewport matrix :\n");
 //	mtx_print(&DELETE_ME);
 
 //	printf("viewp apply all : first row before final tf apply : [%f, %f, %f, %f]\n", ((float *)scoords->arr)[0], ((float *)scoords->arr)[1], ((float *)scoords->arr)[2], ((float *)scoords->arr)[3]);
 	__mtx_dotf_nx4_4x4(model->w * model->h, (float *)model->coords->arr, (float *)final_tf, (float *)scoords->arr);
+	if (cam->cam_type == CAM_PERSPECTIVE)
+		_mtx_idivf_line_c(scoords, model->homogenious_vect);
+//		mtx_div(scoords, model->homogenious_vect, scoords);
+//	_mtx_idivf_pscalar(scoords, -200.0f);
+//	viewport_clip_screen_coords(vp, scoords);
 
-	viewport_clip_screen_coords(vp, scoords);
+
+
+
 //	printf("viewp apply all : first row after final tf apply : [%f, %f, %f, %f]\n", ((float *)scoords->arr)[0], ((float *)scoords->arr)[1], ((float *)scoords->arr)[2], ((float *)scoords->arr)[3]);
 
 /*

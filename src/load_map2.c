@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:24:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/27 05:42:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:13:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,10 @@ int	fdf_load_map(char *map_name, t_fmap *fmap)
 		return (map_clear_strtab(&map_lst) - 1);
 	printf("map loader : about to copy coords\n");
 	fmap->screen_coords = mtx_copy(fmap->coords);
+	mtx_select_col(fmap->screen_coords, 3, fmap->homogenious_vect);
+	printf("map loader : homogenious coords : \n");
+//	mtx_print(fmap->homogenious_vect);
+	mtx_transpose(fmap->homogenious_vect);
 	return (map_clear_strtab(&map_lst));
 }
 /*
