@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/01 15:23:45 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/01 15:23:51 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/01 16:15:46 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,9 @@ LIBMLXADDS	= mlx_addons/libmlxadds.a
 LIBMTX		= mtxlib/libmtx.a
 LIBS		= $(LIBMLXADDS) $(LIBMTX) $(LIBFT) $(LIBMLX)
 
+
+SUBMODULES	= $(MINILIBX_PATH)
+
 %.o:	%.c
 	$(CC) $(CFLAGS) -I$(INCLS) -c $< -o $@
 
@@ -67,13 +70,17 @@ clean:
 fclean:	clean
 	rm -f $(NAME)
 
+$(SUBMODULES):
+	git submodule init
+	git submodule update
+
 $(LIBFT):
 	make -C libft/
 	make -C libft/ bonus
 $(LIBMTX):
 	make -C mtxlib/
-$(LIBMLX):
-	make -C $(MINILIBX_PATH)
+$(LIBMLX): $(SUBMODULES)
+	@make -C $(MINILIBX_PATH)
 $(LIBMLXADDS):
 	make -C mlx_addons/
 
