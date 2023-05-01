@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/30 19:23:06 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/12/01 17:15:13 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 # define FDF_ERR_CLR_LST(err, l) fdf_e_clr_str_list((char *)__FUNCTION__, \
 		(char *)(err), (t_lst *)(l))
 
-# define SCN_WIDTH 840
-# define SCN_HEIGHT 600
+# define SCN_WIDTH 1980
+# define SCN_HEIGHT 1080
 # define SCN_MID_X (SCN_WIDTH / 2)
 # define SCN_MID_Y (SCN_HEIGHT / 2)
 # define ASPECT_RATIO ((float)SCN_WIDTH / (float)SCN_HEIGHT) 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_map2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:24:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/30 20:13:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 15:29:14 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,12 @@ static int	gather_map_lines(int fd, t_lst **map_lst)
 {
 	t_lst	*elem;
 	char	*new_line;
-
+	
+	printf("gather_map_lines starts : fd %d, map_list ptr %p\n", fd, map_lst);
 	new_line = get_next_line(fd);
 	while (new_line)
 	{
+		printf(" - %s", new_line);
 		elem = ft_lstnew(new_line);
 		if (!elem)
 			return (ft_free_p((void **)&new_line) - 1);
@@ -131,10 +133,11 @@ int	fdf_load_map(char *map_name, t_fmap *fmap)
 		return (-1);
 	printf("load_map : checks passed\n");
 	map_lst = NULL;
+	printf("opening map_name : %s\n", map_name);
 	fd = open(map_name, O_RDONLY);
-	if (fd < -1)
+	if (fd < 0)
 	{
-		printf("load_map : file open failed %d\n", fd);
+		printf("load_map : file open failed\n");
 		return (-1);
 	}
 	printf("map loader : gathering map\n");

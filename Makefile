@@ -1,3 +1,14 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/05/01 15:23:45 by iamongeo          #+#    #+#              #
+#    Updated: 2023/05/01 15:23:51 by iamongeo         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 SRC_DIR		= 	src/
 
@@ -27,7 +38,9 @@ ifeq ($(shell uname -s), Linux)
 
 endif
 ifeq ($(shell uname -s), Darwin)
-	FRAMEWORKS	= -framework OpenGL -framework Appkit -lmlx
+	MINILIBX_PATH	= minilibx/minilibx_macos/
+	LIBMLX			= $(MINILIBX_PATH)libmlx.a
+	FRAMEWORKS		= -framework OpenGL -framework Appkit
 endif
 
 LIBFT		= libft/libft.a
@@ -56,6 +69,7 @@ fclean:	clean
 
 $(LIBFT):
 	make -C libft/
+	make -C libft/ bonus
 $(LIBMTX):
 	make -C mtxlib/
 $(LIBMLX):

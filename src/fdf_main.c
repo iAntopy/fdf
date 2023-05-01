@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 06:08:14 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/30 19:54:20 by iamongeo         ###   ########.fr       */
+/*   Updated: 2022/12/01 17:16:40 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -481,10 +481,10 @@ int	main(int argc, char **argv)
 	static const float	init_cam_dimentions[2] = {SCN_WIDTH, SCN_HEIGHT};
 	static const float	init_cam_farnear[2] = {0.01, 400};
 	
-	static const float	init_cam1_pos[3] = {0, 0, -500};
+	static const float	init_cam1_pos[3] = {0, 0, -1000};
 	static const float	init_cam1_thetas[3] = {0, 0, 0};
 	
-	static const float	init_cam2_pos[3] = {0, 0, 500};
+	static const float	init_cam2_pos[3] = {0, 0, 1000};
 	static const float	init_cam2_thetas[3] = {M_PI, 0, 0};
 	
 	static const float	init_cam3_pos[3] = {0, 0, 0};
