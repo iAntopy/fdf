@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/01 21:12:56 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 02:02:04 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <math.h>
 # include <fcntl.h>
-
 
 # include "mlx.h"
 # include "mlxadds.h"

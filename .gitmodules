@@ -1,4 +1,4 @@
-[submodule "minilibx/minilibx-linux"]
-	path = minilibx/minilibx-linux
-	url = https://github.com/42Paris/minilibx-linux.git
-	branch = master
+r
+[submodule "minilibx-linux"]
+	path = minilibx
+	url = git@github.com:42Paris/minilibx-linux.git

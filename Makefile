@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/01 15:23:45 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/02 01:22:34 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/02 02:00:49 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ endif
 ifeq ($(shell uname -s), Darwin)
 	MINILIBX_PATH	= minilibx/minilibx_macos/
 	LIBMLX			= $(MINILIBX_PATH)libmlx.a
-	FRAMEWORKS		= -framework OpenGL -framework Appkit
+	FRAMEWORKS		= -lm -framework OpenGL -framework Appkit
 endif
 
 LIBFT		= libft/libft.a
@@ -57,7 +57,7 @@ SUBMODULES	= $(MINILIBX_PATH)
 all:	$(NAME)
 
 $(NAME):	$(OBJS) $(LIBS)
-	$(CC) $(CFLAGS) -I$(INCLS) $(FRAMEWORKS) $(OBJS) -o $(NAME) $(LIBS)
+	$(CC) $(CFLAGS) -I$(INCLS) $(OBJS) $(FRAMEWORKS) -o $(NAME) $(LIBS) 
 
 $(NAME_BONUS):	$(LIBS) $(OBJ_COM) $(OBJ_B)
 	$(CC) $(CFLAGS) $(FRAMEWORKS) $(OBJ_COM) $(OBJ_B) -o $(NAME_BONUS) $(LIBS)
@@ -72,7 +72,7 @@ fclean:	clean
 
 $(SUBMODULES):
 	git submodule init
-	git submodule update --remote --merge
+	git submodule update --init --remote
 
 $(LIBFT):
 	make -C libft/
