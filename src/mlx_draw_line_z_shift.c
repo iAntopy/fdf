@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 21:55:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/01 21:52:03 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 05:20:16 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	swap_limits(int *lims[2], int ds[2])
 static int	z_color_shift(int dx, int dy, int ds[3])
 {
 	float	ratio;
-	float	partial_cols[3];
+//	float	partial_cols[3];
 	int	col;
 
 //	col = 0x00ffffff;
@@ -63,9 +63,9 @@ static int	z_color_shift(int dx, int dy, int ds[3])
 	}
 	else
 	{
-		partial_cols[0] = 245.0f;
-		partial_cols[1] = ratio;//* (1.0f - ratio);
-		partial_cols[2] = partial_cols[1];
+//		partial_cols[0] = 245.0f;
+//		partial_cols[1] = ratio;//* (1.0f - ratio);
+//		partial_cols[2] = partial_cols[1];
 		col += (int)(0xff * (1.0f - ratio)) << 8;
 		col += (int)(0xff * (1.0f - ratio));
 	}

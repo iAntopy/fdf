@@ -27,9 +27,9 @@
 */
 
 
-#ifndef MLX_LINUX_H
+#ifndef MLX_H
 
-# define MLX_LINUX_H
+#define	MLX_H
 
 
 void	*mlx_init();

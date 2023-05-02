@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 21:07:52 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/01 22:59:56 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 04:25:31 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,7 @@ void	camo_move(t_camo *cam, float dx, float dy, float dz)
 		ft_eprintf("fdf cam : missing input\n");
 		return ;
 	}
-	ft_printf("move dx %d, dy %d, dz %d\n", (int)dx, (int)dy, (int)dz);
+//	ft_printf("move dx %d, dy %d, dz %d\n", (int)dx, (int)dy, (int)dz);
 	rot = (float *)cam->rot->arr;
 //	rvect[0] = dx * rot[0] + dy * rot[1] + dz * rot[2];
 //	rvect[1] = dx * rot[4] + dy * rot[5] + dz * rot[6];

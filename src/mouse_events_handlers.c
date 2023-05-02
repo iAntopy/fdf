@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 17:08:15 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/01 22:06:31 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 04:51:46 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	mouse_cam_rotate(t_fdf *fdf, int dx, int dy)
 	static const float	redux = 0.005;
 //	printf("mouse cam rotate : dx, dy = (%d, %d)\n", dx, dy);
 //	printf("mouse cam rotate : y theta (dx / (asp * fov)), x theta (dy / fov) = (%f, %f)\n", (float)dx / (fdf->cam1.aspect_ratio * fdf->cam1.fov), (float)dy / fdf->cam1.fov);
-
 	camo_rotate(&fdf->cam1, redux * (float)dy / fdf->cam1.fov,
 		-redux * (float)dx / (fdf->cam1.aspect_ratio * fdf->cam1.fov), 0);
 }

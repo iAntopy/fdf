@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 06:08:14 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/01 23:54:12 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 05:22:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,7 +357,7 @@ void	pause_anime_on_off(t_fdf *fdf)
 
 static void	switch_ctrl_mode(t_fdf *fdf)
 {
-	printf("SWITCHING CONTROL MODE ! mlx->win ptr : %p\n", fdf->mlx.win);
+	printf("SWITCHING CONTROL MODE !");
 	fdf->is_cam_ctrl_active = !fdf->is_cam_ctrl_active;
 	if (fdf->is_cam_ctrl_active)
 	{
@@ -488,6 +488,10 @@ int	on_keyup(int key, t_fdf *fdf_p)
 		fdf_p->pkeys.shift = 0;
 	else if (key == KC_Control_L)
 		fdf_p->pkeys.ctrl = 0;
+	else if (key == KC_Left)
+		fdf_p->pkeys.left = 0;
+	else if (key == KC_Right)
+		fdf_p->pkeys.right = 0;
 	return (0);
 }
 
@@ -514,10 +518,16 @@ int	on_keydown(int key, t_fdf *fdf_p)
 		fdf_p->pkeys.shift = 1;
 	else if (key == KC_Control_L)
 		fdf_p->pkeys.ctrl = 1;
+	else if (key == KC_Left)
+		fdf_p->pkeys.left = 1;
+	else if (key == KC_Right)
+		fdf_p->pkeys.right = 1;
 	else if (key == KC_Escape)
 		on_close(fdf_p);
 	else if (key == KC_Space)
 		switch_ctrl_mode(fdf_p);
+	else if (key == KC_Delete)
+		pause_anime_on_off(fdf_p);
 //	printf("keys pressed : w %d, a %d, s %d, d %d, q %d, e %d, shft %d, ctrl %d\n",
 //		fdf_p->pkeys.w, fdf_p->pkeys.a, fdf_p->pkeys.s, fdf_p->pkeys.d,
 //		fdf_p->pkeys.q, fdf_p->pkeys.e, fdf_p->pkeys.shift, fdf_p->pkeys.ctrl);
@@ -549,25 +559,52 @@ int	on_update(void *fdf_p)
 			camo_rotate(&fdf->cam1, 0, 0, 0.02f);
 		if (fdf->pkeys.e)
 			camo_rotate(&fdf->cam1, 0, 0, -0.02f);
+		if (fdf->pkeys.left)
+			camo_rotate(&fdf->cam1, 0, 0.02f, 0);
+		if (fdf->pkeys.right)
+			camo_rotate(&fdf->cam1, 0, -0.02f, 0);
+		if (fdf->pkeys.up)
+			camo_rotate(&fdf->cam1, -0.02f, 0, 0);
+		if (fdf->pkeys.down)
+			camo_rotate(&fdf->cam1, 0.02f, 0, 0);
 		if (fdf->pkeys.shift)
-			camo_move(&fdf->cam1, 0, 10.0f, 0);
-		if (fdf->pkeys.ctrl)
 			camo_move(&fdf->cam1, 0, -10.0f, 0);
+		if (fdf->pkeys.ctrl)
+			camo_move(&fdf->cam1, 0, 10.0f, 0);
+
 	}
 	else
 	{
-		if (fdf->pkeys.a)
-			fmap_rotate(&fdf->map, 0, 0.1f, 0);
-		if (fdf->pkeys.d)
-			fmap_rotate(&fdf->map, 0, -0.1f, 0);
-		if (fdf->pkeys.w)
-			fmap_rotate(&fdf->map, -0.1f, 0, 0);
-		if (fdf->pkeys.s)
-			fmap_rotate(&fdf->map, 0.1f, 0, 0);
-		if (fdf->pkeys.q)
-			fmap_rotate(&fdf->map, 0, 0, -0.1f);
-		if (fdf->pkeys.e)
-			fmap_rotate(&fdf->map, 0, 0, 0.1f);
+		if (fdf->pkeys.shift)
+		{
+			if (fdf->pkeys.a)
+				fmap_move(&fdf->map, 10, 0, 0);
+			if (fdf->pkeys.d)
+				fmap_move(&fdf->map, -10, 0, 0);
+			if (fdf->pkeys.w)
+				fmap_move(&fdf->map, 0, 0, 10);
+			if (fdf->pkeys.s)
+				fmap_move(&fdf->map, 0, 0, -10);
+			if (fdf->pkeys.q)
+				fmap_move(&fdf->map, 0, -10, 0);
+			if (fdf->pkeys.e)
+				fmap_move(&fdf->map, 0, 10, 0);
+		}
+		else
+		{
+			if (fdf->pkeys.a)
+				fmap_rotate(&fdf->map, 0, 0.1f, 0);
+			if (fdf->pkeys.d)
+				fmap_rotate(&fdf->map, 0, -0.1f, 0);
+			if (fdf->pkeys.w)
+				fmap_rotate(&fdf->map, -0.1f, 0, 0);
+			if (fdf->pkeys.s)
+				fmap_rotate(&fdf->map, 0.1f, 0, 0);
+			if (fdf->pkeys.q)
+				fmap_rotate(&fdf->map, 0, 0, -0.1f);
+			if (fdf->pkeys.e)
+				fmap_rotate(&fdf->map, 0, 0, 0.1f);
+		}
 		if (fdf->pkeys.up)
 			fmap_scale(&fdf->map, 1, 1, 1.05f);
 		if (fdf->pkeys.down)
@@ -595,10 +632,11 @@ int	on_update(void *fdf_p)
 	{
 		fmap_rotate(&fdf->map, 0, 0.01f, 0);
 //		camo_rotate(&fdf->cam2, 0.01f, 0, 0);
-		update_map(fdf, 1);
+//		update_map(fdf, 1);
 //		on_rotate_y(fdf, 0.01);
 //		update_map_no_cam(fdf);
 	}	
+	update_map(fdf, 1);
 	return (0);
 }
 
@@ -617,9 +655,50 @@ void	print_controls(void)
  ||"YL"       _|        _|_|_|    _|      "WT"- A Multi-Perspective Visualizer "WT"||\n");
 	ft_printf(WT"()"CY"-------------------------------( *** )------------------------------"WT"()\n"RS);
 
-	ft_printf(WT"|| + CONTROLS : \n"WT);
-	ft_printf(WT"|| + 			- W, A, S, D : \n"WT);
-	ft_printf(WT"|| + \n"WT);
+	ft_printf(WT"||"YL" + \tThis program is a multi-perspective map visualizer.\n");
+	ft_printf(WT"||"YL" + It takes .fdf files (exemples in maps/) and displays them in a 4 quadrant window.\n");
+	ft_printf(WT"||"YL" + The 2 top quadrants show the loaded map with perspective projections.\n");
+	ft_printf(WT"||"YL" + The bottom ones show the map with orthographic projections.\n");
+	ft_printf(WT"||"YL" + Each quadrant displays THE SAME model, only from different positions/orientations.\n");
+	ft_printf(WT"||"YL" +\n") ;
+	ft_printf(WT"||"YL" + \tThe models displayed are the result of the full set of transformations\n");
+	ft_printf(WT"||"YL" + from model transform -> camera transform -> viewport transform and each\n"); 
+	ft_printf(WT"||"YL" + stage is fully customizable, while model/camera transforms are interactable\n");
+	ft_printf(WT"||"YL" + with in real time.\n");
+	ft_printf(WT"||"YL" +\n") ;
+	ft_printf(WT"||"YL" + \tOptionally, a 2nd map file can be passed as argument so that both are drawn\n");
+	ft_printf(WT"||"YL" + on screen (beacon.fdf strongly suggested). Seeing a second model on screen helps\n") ;
+	ft_printf(WT"||"YL" + anchor a point of spacial reference so that the movements applied to the first \n") ;
+	ft_printf(WT"||"YL" + one are easier to understand in contexte.\n") ;
+	ft_printf(WT"||"YL" +\n") ;
+	ft_printf(WT"||"YL" + \tNow it's your time to take control. The visualizer operates in 2 distinct modes.\n");
+	ft_printf(WT"||"YL" + Switch between modes by pressing the SPACEBAR. Stop animation with DELETE.\n");
+	ft_printf(WT"||"YL" +\n") ;
+	ft_printf(WT"||"YL" + \t1. Model control (where X is left, Y is up, Z is forward) :\n");
+	ft_printf(WT"||"YL" + \t\t         A | D   : Rotate the model around the Y axis\n");
+	ft_printf(WT"||"YL" + \t\t         W | S   : Rotate the model around the X axis\n");
+	ft_printf(WT"||"YL" + \t\t         Q | E   : Rotate the model around the Z axis\n");
+	ft_printf(WT"||"YL" + \t\t SHIFT + A | D   : Move the model along the X axis\n");
+	ft_printf(WT"||"YL" + \t\t SHIFT + W | S   : Move the model along the Z axis\n");
+	ft_printf(WT"||"YL" + \t\t SHIFT + Q | E   : Move the model along the Y axis\n");
+	ft_printf(WT"||"YL" + \t\t Arrows UP | DN  : Stretch the model in the Z direction relative to itself.\n");
+	ft_printf(WT"||"YL" +\n") ;
+	ft_printf(WT"||"YL" + \t2. Camera control (relative to current orientation, applied to quadrant 1) :\n");
+	ft_printf(WT"||"YL" + \t\t         A | D   : Strafe the camera left, right\n");
+	ft_printf(WT"||"YL" + \t\t         W | S   : Move the camera forwards and backwards\n");
+	ft_printf(WT"||"YL" + \t\t     SHIFT | CTRL: Move the camera forwards and backwards\n");
+	ft_printf(WT"||"YL" + \t\t         Q | E   : Rotate the camera around its relative Z axis (Tilt)\n");
+	ft_printf(WT"||"YL" + \t\t       LFT | RGT : Rotate the camera around its relative Y axis\n");
+	ft_printf(WT"||"YL" + \t\t        UP | DN  : Rotate the camera around its relative X axis\n");
+	ft_printf(WT"||"YL" +\n") ;
+	ft_printf(WT"||"YL" + \tMouse (Camera mode only) :\n");
+	ft_printf(WT"||"YL" + \t\t        CLICK + MOVE : Rotates the camera around the X and Y axies.\n");
+	ft_printf(WT"||"YL" + \n");
+	ft_printf(WT"||"YL" + \tOthers :\n");
+	ft_printf(WT"||"YL" + \t\t        SPACEBAR : Switch control modes.\n");
+	ft_printf(WT"||"YL" + \t\t        DELETE   : Switch animation on/off.\n");
+	ft_printf(WT"||"YL" + \n");
+	ft_printf(WT"()"CY"-------------------------------( *** )------------------------------"WT"()\n\n"RS);
 }
 
 int	main(int argc, char **argv)
@@ -667,7 +746,7 @@ int	main(int argc, char **argv)
 	fmap_set_rotation(&fdf.map, ISO_X_THETA, ISO_Y_THETA, 0);
 	fmap_set_rotation(&fdf.beacon, M_PI / 2, 0, 0);
 //	fmap_set_position(&fdf.map, 0, 0, 100);
-	fmap_set_position(&fdf.beacon, 400, 0, 400);
+	fmap_set_position(&fdf.beacon, 200, 0, 200);
 //	fmap_set_scale(&fdf.beacon, 10, 10, 10);
 
 

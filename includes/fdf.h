@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/02 02:02:04 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 04:00:33 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 # define FDF_ERR_CLR_LST(err, l) fdf_e_clr_str_list((char *)__FUNCTION__, \
 		(char *)(err), (t_lst *)(l))
 
-# define SCN_WIDTH 1980
-# define SCN_HEIGHT 1080
+# define SCN_WIDTH 1024//1980
+# define SCN_HEIGHT 780//1080
 # define SCN_MID_X (SCN_WIDTH >> 1)
 # define SCN_MID_Y (SCN_HEIGHT >> 1)
 # define ASPECT_RATIO ((float)SCN_WIDTH / (float)SCN_HEIGHT) 
@@ -133,6 +133,8 @@ typedef struct s_keypressed_field
 	char	ctrl;
 	char	up;
 	char	down;
+	char	left;
+	char	right;
 }	t_pkeys;
 
 typedef struct	s_fdf_data

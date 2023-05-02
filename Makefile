@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/01 15:23:45 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/02 02:00:49 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/02 02:56:36 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,7 @@ NAME		= fdf
 ifeq ($(shell uname -s), Linux)
 	MINILIBX_PATH	= minilibx/minilibx-linux/
 	LIBMLX		= $(MINILIBX_PATH)libmlx.a
-	FRAMEWORKS	= -lm -lX11 -lXext
+	FRAMEWORKS	= -lm -lXext -lX11
 
 endif
 ifeq ($(shell uname -s), Darwin)
@@ -48,7 +48,6 @@ LIBMLXADDS	= mlx_addons/libmlxadds.a
 LIBMTX		= mtxlib/libmtx.a
 LIBS		= $(LIBMLXADDS) $(LIBMTX) $(LIBFT) $(LIBMLX)
 
-
 SUBMODULES	= $(MINILIBX_PATH)
 
 %.o:	%.c
@@ -57,10 +56,10 @@ SUBMODULES	= $(MINILIBX_PATH)
 all:	$(NAME)
 
 $(NAME):	$(OBJS) $(LIBS)
-	$(CC) $(CFLAGS) -I$(INCLS) $(OBJS) $(FRAMEWORKS) -o $(NAME) $(LIBS) 
+	$(CC) $(CFLAGS) -I$(INCLS) $(OBJS) -o $(NAME) $(LIBS) $(FRAMEWORKS) 
 
 $(NAME_BONUS):	$(LIBS) $(OBJ_COM) $(OBJ_B)
-	$(CC) $(CFLAGS) $(FRAMEWORKS) $(OBJ_COM) $(OBJ_B) -o $(NAME_BONUS) $(LIBS)
+	$(CC) $(CFLAGS) $(OBJ_COM) $(OBJ_B) -o $(NAME_BONUS) $(LIBS) $(FRAMEWORKS) 
 
 bonus:	$(NAME_BONUS)
 
@@ -71,7 +70,6 @@ fclean:	clean
 	rm -f $(NAME)
 
 $(SUBMODULES):
-	git submodule init
 	git submodule update --init --remote
 
 $(LIBFT):
