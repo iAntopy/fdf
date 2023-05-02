@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 06:08:14 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/02 05:22:07 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 12:25:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -582,9 +582,9 @@ int	on_update(void *fdf_p)
 			if (fdf->pkeys.d)
 				fmap_move(&fdf->map, -10, 0, 0);
 			if (fdf->pkeys.w)
-				fmap_move(&fdf->map, 0, 0, 10);
-			if (fdf->pkeys.s)
 				fmap_move(&fdf->map, 0, 0, -10);
+			if (fdf->pkeys.s)
+				fmap_move(&fdf->map, 0, 0, 10);
 			if (fdf->pkeys.q)
 				fmap_move(&fdf->map, 0, -10, 0);
 			if (fdf->pkeys.e)
@@ -674,14 +674,14 @@ void	print_controls(void)
 	ft_printf(WT"||"YL" + \tNow it's your time to take control. The visualizer operates in 2 distinct modes.\n");
 	ft_printf(WT"||"YL" + Switch between modes by pressing the SPACEBAR. Stop animation with DELETE.\n");
 	ft_printf(WT"||"YL" +\n") ;
-	ft_printf(WT"||"YL" + \t1. Model control (where X is left, Y is up, Z is forward) :\n");
-	ft_printf(WT"||"YL" + \t\t         A | D   : Rotate the model around the Y axis\n");
-	ft_printf(WT"||"YL" + \t\t         W | S   : Rotate the model around the X axis\n");
-	ft_printf(WT"||"YL" + \t\t         Q | E   : Rotate the model around the Z axis\n");
+	ft_printf(WT"||"YL" + \t1. Model control (rotations relative to current orientation) :\n");
+	ft_printf(WT"||"YL" + \t\t         A | D   : Rotate the model around its Y axis\n");
+	ft_printf(WT"||"YL" + \t\t         W | S   : Rotate the model around its X axis\n");
+	ft_printf(WT"||"YL" + \t\t         Q | E   : Rotate the model around its Z axis\n");
 	ft_printf(WT"||"YL" + \t\t SHIFT + A | D   : Move the model along the X axis\n");
 	ft_printf(WT"||"YL" + \t\t SHIFT + W | S   : Move the model along the Z axis\n");
 	ft_printf(WT"||"YL" + \t\t SHIFT + Q | E   : Move the model along the Y axis\n");
-	ft_printf(WT"||"YL" + \t\t Arrows UP | DN  : Stretch the model in the Z direction relative to itself.\n");
+	ft_printf(WT"||"YL" + \t\t Arrows UP | DN  : Stretch the model's height.\n");
 	ft_printf(WT"||"YL" +\n") ;
 	ft_printf(WT"||"YL" + \t2. Camera control (relative to current orientation, applied to quadrant 1) :\n");
 	ft_printf(WT"||"YL" + \t\t         A | D   : Strafe the camera left, right\n");
@@ -699,6 +699,13 @@ void	print_controls(void)
 	ft_printf(WT"||"YL" + \t\t        DELETE   : Switch animation on/off.\n");
 	ft_printf(WT"||"YL" + \n");
 	ft_printf(WT"()"CY"-------------------------------( *** )------------------------------"WT"()\n\n"RS);
+}
+
+int	report_missing_input(void)
+{
+	ft_eprintf("FdF ERROR : No map was provided. Pass a .fdf map file as argument (See exemples in maps/*.fdf).");
+	ft_eprintf("\t[Optional : 2nd map file for spacial reference (maps/beacon.fdf suggested)]\n");
+	return (-1);
 }
 
 int	main(int argc, char **argv)
@@ -727,7 +734,7 @@ int	main(int argc, char **argv)
 	t_fdf	fdf;
 
 	if (argc < 2)
-		return (1);
+		return (report_missing_input());
 	ft_memclear(&fdf, sizeof(t_fdf));
 	if (fdf_load_map(argv[1], &fdf.map) < 0)
 		return (2);

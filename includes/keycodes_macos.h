@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keycodes_macos.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 19:07:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/01 20:53:24 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/02 12:20:54 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,10 @@ enum {
   KC_Backspace                 = 0x33,
   KC_Escape                    = 0x35,
   KC_Command                   = 0x37,
-  KC_Shift_L                   = 0x100,//0x38,
+  KC_Shift_L                   = 0x101,//0x38,
   KC_CapsLock                  = 0x39,
   KC_Option                    = 0x3A,
-  KC_Control_L                 = 0x101,// 0x3B,
+  KC_Control_L                 = 0x100,// 0x3B,
   KC_Shift_R                   = 0x3C,
   KC_Option_R                  = 0x3D,
   KC_Control_R                 = 0x3E,
