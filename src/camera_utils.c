@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 21:07:52 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/30 19:51:47 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 22:59:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ static void	camo_init_perspective_projection(t_camo *cam, int update_transform)
 //	arr[11] = 1;
 //	arr[14] = -(cam->far * cam->near) / (cam->far - cam->near);//cam->pspct_ratio_z2;
 
-	printf("init perspective : post init data : fov, aspect ratio, (far, near), (top, bottom), (left, right) : %f, %f, (%f, %f), (%f, %f), (%f, %f)\n", 
-		cam->fov, cam->aspect_ratio,cam->far, cam->near, cam->top, cam->bottom, cam->left, cam->right);
+//	printf("init perspective : post init data : fov, aspect ratio, (far, near), (top, bottom), (left, right) : %f, %f, (%f, %f), (%f, %f), (%f, %f)\n", 
+//		cam->fov, cam->aspect_ratio,cam->far, cam->near, cam->top, cam->bottom, cam->left, cam->right);
 	if (update_transform)
 		camo_update_transform(cam);
 }
@@ -140,33 +140,33 @@ int	camo_update(t_camo *cam)
 int	camo_init(t_camo *cam, const float *init_pos, const float *dims,
 	   			const float farnear[2], const float *init_thetas, int cam_type)
 {
-	printf("camo init : entered\n");
+//	printf("camo init : entered\n");
 	if (!cam)
 		return (-1);
-	printf("camo init : checked\n");
+//	printf("camo init : checked\n");
 	cam->pos = cam->__mtx_pool;
 	cam->offset = cam->__mtx_pool + 1;//cam->__qpool;
 	cam->rot = cam->__mtx_pool + 2;//cam->__qpool;
 	cam->base_projection = cam->__mtx_pool + 3;
 	cam->transform = cam->__mtx_pool + 4;
-	printf("camo init : checked 3, cam->rot : %p\n", cam->rot);
+//	printf("camo init : checked 3, cam->rot : %p\n", cam->rot);
 	
 	cam->pos->arr = cam->__pos_arr;
 	cam->offset->arr = cam->__off_arr;
 	cam->rot->arr = cam->__rot_arr;
 	cam->base_projection->arr = cam->__base_arr;
 	cam->transform->arr = cam->__transform_arr;
-	printf("camo init : checked 4\n");
+//	printf("camo init : checked 4\n");
 	
 	mtx_shell(cam->pos, 3, 1, DTYPE_F);
 	mtx_shell(cam->offset, 3, 1, DTYPE_F);
 	mtx_shell(cam->rot, 4, 4, DTYPE_F);
 	mtx_shell(cam->base_projection, 4, 4, DTYPE_F);
 	mtx_shell(cam->transform, 4, 4, DTYPE_F);
-	printf("camo init : checked 5\n");
+//	printf("camo init : checked 5\n");
 //	mtx_transpose(cam->pos);
 //	quat_create_empty(cam->rot);
-	printf("camo init : shells and quats init\n");
+//	printf("camo init : shells and quats init\n");
 	if (init_pos)
 	{
 		mtx_set_index_f(cam->pos, 0, 0, init_pos[0]);
@@ -201,11 +201,11 @@ int	camo_init(t_camo *cam, const float *init_pos, const float *dims,
 		cam->cam_type = CAM_PERSPECTIVE;
 	}
 
-	printf("camo init : ortho ratios x y z : %f, %f, %f\n", cam->ortho_ratio_x, cam->ortho_ratio_y, cam->ortho_ratio_z);
-	printf("camo init : init pos and thetas setup\n");
-	printf("camo init : before cam update\n");
+//	printf("camo init : ortho ratios x y z : %f, %f, %f\n", cam->ortho_ratio_x, cam->ortho_ratio_y, cam->ortho_ratio_z);
+//	printf("camo init : init pos and thetas setup\n");
+//	printf("camo init : before cam update\n");
 	camo_update(cam);
-
+/*
 	printf("camo init : after cam update\n");
 	printf("cam init : base projection :\n");
 	mtx_print(cam->base_projection);
@@ -216,7 +216,7 @@ int	camo_init(t_camo *cam, const float *init_pos, const float *dims,
 //	printf("cam init : rotation quaternion info :\n");
 //	quat_display_info(cam->rot);
 	printf("camo init : after cam update\n");
-
+*/
 	return (0);
 }
 
@@ -230,7 +230,7 @@ void	camo_move_absolute(t_camo *cam, float dx, float dy, float dz)
 	cam->__pos_arr[0] += dx;
 	cam->__pos_arr[1] += dy;
 	cam->__pos_arr[2] += dz;
-	printf("new cam position : (%f, %f, %f)\n", cam->__pos_arr[0], cam->__pos_arr[1], cam->__pos_arr[2]);
+//	printf("new cam position : (%f, %f, %f)\n", cam->__pos_arr[0], cam->__pos_arr[1], cam->__pos_arr[2]);
 //	camo_update_rotation(cam, 1);
 	camo_update_position(cam, 1);
 }
@@ -244,6 +244,7 @@ void	camo_move(t_camo *cam, float dx, float dy, float dz)
 		ft_eprintf("fdf cam : missing input\n");
 		return ;
 	}
+	ft_printf("move dx %d, dy %d, dz %d\n", (int)dx, (int)dy, (int)dz);
 	rot = (float *)cam->rot->arr;
 //	rvect[0] = dx * rot[0] + dy * rot[1] + dz * rot[2];
 //	rvect[1] = dx * rot[4] + dy * rot[5] + dz * rot[6];
@@ -333,7 +334,7 @@ void	camo_set_position(t_camo *cam, float x, float y, float z)
 	cam->__pos_arr[0] = x;
 	cam->__pos_arr[1] = y;
 	cam->__pos_arr[2] = z;
-	printf("new cam position : (%f, %f, %f)\n", cam->__pos_arr[0], cam->__pos_arr[1], cam->__pos_arr[2]);
+//	printf("new cam position : (%f, %f, %f)\n", cam->__pos_arr[0], cam->__pos_arr[1], cam->__pos_arr[2]);
 	camo_update_position(cam, 1);
 //	camo_update_rotation(cam, 1);
 //	camo_update_base_projection(cam, 1);

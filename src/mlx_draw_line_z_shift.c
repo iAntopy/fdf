@@ -6,13 +6,13 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 21:55:29 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/27 05:50:48 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 21:52:03 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
-
+/*
 static int	pixel_is_inbound(t_mlx *mlx, int x, int y, int z)
 {
 	return ((x >= 0) && (y >=0) && (x < mlx->width) && (y < mlx->height)
@@ -26,7 +26,7 @@ static int	pixel_is_bg_color(t_mlx *mlx, int x, int y)
 	pix = mlx_index_buffer(mlx->off_buff, x, y);
 	return (*pix == BG_COL || *pix == BG_COL2);
 }
-
+*/
 static void	swap_limits(int *lims[2], int ds[2])
 {
 	int	*temp;
@@ -77,7 +77,7 @@ static int	z_color_shift(int dx, int dy, int ds[3])
 	return (col);
 }
 
-static void	draw_line_low(t_mlx *mlx, int *lims[2], int ds[3])
+static void	draw_line_low(t_mlx *mlx, int *lims[2], int ds[3], int *bounds[2])
 {
 	int	D;
 	int	yi;
@@ -91,10 +91,10 @@ static void	draw_line_low(t_mlx *mlx, int *lims[2], int ds[3])
 	ds[1] *= yi;
 	D = (2 * ds[1]) - ds[0];
 	dy_min_dx = ds[1] - ds[0];
-	while (++x < lims[1][0])
+	while (++x < lims[1][0])// && bounds[0][0] < x < bounds[1][0] && bounds[0][1] < y < bounds[1][1])
 	{
 //		if (pixel_is_inbound(mlx, x, y, (int)((float)x - lims[0][0]) / ds[0] * ds[2] + lims[0][2]) && pixel_is_bg_color(mlx, x, y))
-		if (pixel_is_inbound(mlx, x, y, 1) && pixel_is_bg_color(mlx, x, y))
+		if ((bounds[0][0] < x && x < bounds[1][0]) && (bounds[0][1] < y && y < bounds[1][1]))//pixel_is_inbound(mlx, x, y, 1) )//&& pixel_is_bg_color(mlx, x, y))
 //		if (pixel_is_inbound(mlx, x, y))			// TODO : MOVE CLIPPING OUTSIDE DRAW CALL.
 			mlx_buff_put_pixel(mlx->off_buff, x, y,
 				z_color_shift(x - lims[0][0], y - lims[0][1], ds));
@@ -108,7 +108,7 @@ static void	draw_line_low(t_mlx *mlx, int *lims[2], int ds[3])
 	}
 }
 
-static void	draw_line_high(t_mlx *mlx, int *lims[2], int ds[3])
+static void	draw_line_high(t_mlx *mlx, int *lims[2], int ds[3], int *bounds[2])
 {
 	int	D;
 	int	xi;
@@ -125,7 +125,7 @@ static void	draw_line_high(t_mlx *mlx, int *lims[2], int ds[3])
 	while (++y < lims[1][1])
 	{
 //		if (pixel_is_inbound(mlx, x, y, (int)((float)y - lims[0][1]) / ds[1] * ds[2] + lims[0][2]) && pixel_is_bg_color(mlx, x, y))
-		if (pixel_is_inbound(mlx, x, y, 1) && pixel_is_bg_color(mlx, x, y))
+		if ((bounds[0][0] < x && x < bounds[1][0]) && (bounds[0][1] < y && y < bounds[1][1]))//pixel_is_inbound(mlx, x, y, 1)// && pixel_is_bg_color(mlx, x, y))
 			mlx_buff_put_pixel(mlx->off_buff, x, y,
 				z_color_shift(x - lims[0][0], y - lims[0][1], ds));
 		if (D > 0)
@@ -138,7 +138,8 @@ static void	draw_line_high(t_mlx *mlx, int *lims[2], int ds[3])
 	}
 }
 
-void	mlx_draw_line_z_shift(t_mlx *mlx, int start[3], int end[3])
+// scn_bounderies as [[min x lim, min y lim], [max x lim, max y lim]]
+void	mlx_draw_line_z_shift(t_mlx *mlx, int start[3], int end[3], int *scn_bounderies[2])
 {
 	int	deltas[3];
 	int	*limits[2];
@@ -157,7 +158,7 @@ void	mlx_draw_line_z_shift(t_mlx *mlx, int start[3], int end[3])
 //			printf("SWAP!\n");
 		}
 //		printf("draw line low : from (%i, %i) to delta (%i, %i), color %d\n", *limits[0], *limits[1], deltas[0], deltas[1], color);
-		draw_line_low(mlx, limits, deltas);
+		draw_line_low(mlx, limits, deltas, scn_bounderies);
 	}
 	else
 	{
@@ -167,6 +168,6 @@ void	mlx_draw_line_z_shift(t_mlx *mlx, int start[3], int end[3])
 			swap_limits(limits, deltas);
 //			printf("SWAP!\n");
 		}
-		draw_line_high(mlx, limits, deltas);
+		draw_line_high(mlx, limits, deltas, scn_bounderies);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   viewport_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
+/*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 22:31:54 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/30 16:14:31 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 22:56:05 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	viewport_init(t_viewp *vp, const int pos[2], const int size[2])
 	vp->transform->arr = vp->__t_arr;
 	mtx_shell(vp->transform, 4, 4, DTYPE_F);
 	_viewport_init_transform(vp);
-	printf("viewport init : transform after init :\n");
-	mtx_print(vp->transform);
+//	printf("viewport init : transform after init :\n");
+//	mtx_print(vp->transform);
 	return (0);
 }
 

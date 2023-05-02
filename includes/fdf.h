@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 05:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/12/01 17:15:13 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 21:12:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 
 # define SCN_WIDTH 1980
 # define SCN_HEIGHT 1080
-# define SCN_MID_X (SCN_WIDTH / 2)
-# define SCN_MID_Y (SCN_HEIGHT / 2)
+# define SCN_MID_X (SCN_WIDTH >> 1)
+# define SCN_MID_Y (SCN_HEIGHT >> 1)
 # define ASPECT_RATIO ((float)SCN_WIDTH / (float)SCN_HEIGHT) 
 # define VERT_FOV (M_PI / 3)
 
@@ -121,6 +121,20 @@ typedef struct	s_viewport
 	float		__t_arr[16];
 }	t_viewp;
 
+typedef struct s_keypressed_field
+{
+	char	w;
+	char	a;
+	char	s;
+	char	d;
+	char	q;
+	char	e;
+	char	shift;
+	char	ctrl;
+	char	up;
+	char	down;
+}	t_pkeys;
+
 typedef struct	s_fdf_data
 {
 	t_mlx		mlx;
@@ -138,9 +152,10 @@ typedef struct	s_fdf_data
 	int			bg_col;
 	char		is_animation_active;
 	char		is_cam_ctrl_active;
-
+	
+	t_pkeys		pkeys;
 	char		is_mouse_pressed;
-	int		last_mouse_coord[2];
+	int			last_mouse_coord[2];
 }	t_fdf;
 
 enum	e_cam_types
@@ -151,7 +166,7 @@ enum	e_cam_types
 
 // FDF INIT
 int	fdf_load_map(char *map_name, t_fmap *map);
-void	mlx_draw_line_z_shift(t_mlx *mlx, int start[3], int end[3]);
+void	mlx_draw_line_z_shift(t_mlx *mlx, int start[3], int end[3], int *scn_bounderies[2]);
 
 // FDF SWITCHS
 int	fdf_modelmode_key_switch(int key, void *fdf_p);

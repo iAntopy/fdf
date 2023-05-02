@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 23:55:34 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/26 19:40:27 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 23:02:06 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	__setup_quat(t_quat *q)
 
 	(q->__mtx).arr = (float *)q->__rot_arr;
 	q->rot_mtx = &(q->__mtx);
-	printf("__setup_quat : quat rot_mtx ptr %p\n", q->rot_mtx);
+//	printf("__setup_quat : quat rot_mtx ptr %p\n", q->rot_mtx);
 	mtx_shell(q->rot_mtx, 4, 4, DTYPE_F);
 //im 	q->rot_mtx->swap = (float *)q->__rot_arr_swap;
 	q->translation = &(q->__tr_view);

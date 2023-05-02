@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 17:44:40 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/29 06:06:23 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 23:02:30 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,15 @@ static void	fmap_update_translation(t_fmap *map, int update_transform)
 
 int	fmap_update(t_fmap *map)
 {
-	printf("fmap update : entered\n");
+//	printf("fmap update : entered\n");
 	if (!map)
 		return (-1);
 	fmap_update_scaling(map, 0);
-	printf("fmap update : scaling DONE\n");
+//	printf("fmap update : scaling DONE\n");
 	fmap_update_rotation(map, 0);
-	printf("fmap update : rotation DONE\n");
+//	printf("fmap update : rotation DONE\n");
 	fmap_update_translation(map, 1);
-	printf("fmap update : translation DONE\n");
+//	printf("fmap update : translation DONE\n");
 	return (0);
 }
 

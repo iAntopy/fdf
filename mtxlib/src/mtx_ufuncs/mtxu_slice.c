@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 00:21:30 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/17 04:33:09 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 23:01:07 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "mtxlib.h"
@@ -66,7 +66,7 @@ t_mtx	*mtx_slice_view(t_mtx *mtx, int slice[4], t_mtx	*out)
 	ret->offset = (mtx->strides[0] * slice[0] + mtx->strides[1] * slice[1]);
 	ret->shape[0] = rrange;
 	ret->shape[1] = crange;
-	ft_printf("slice view : shapes set (rrange %d, crange %d)\n", rrange, crange);
+//	ft_printf("slice view : shapes set (rrange %d, crange %d)\n", rrange, crange);
 	ret->is_view = 1;
 	if (rrange == 1)
 		mtx_transpose(ret);

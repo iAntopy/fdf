@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 20:24:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2023/05/01 15:29:14 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 22:58:56 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,17 @@ static int	map_clear_strtab(t_lst **map)
 
 	if (!map)
 		return (0);
-	printf("map clear strtab : enetered and checked. *map : %p\n", *map);
+//	printf("map clear strtab : enetered and checked. *map : %p\n", *map);
 	elem = *map;
 	while (elem)
 	{
 		elem_next = elem->next;
-		printf("map clear strtab : elem->content : %p, elem->content[0] : %s\n", elem->content, ((char **)(elem->content))[0]);
+//		printf("map clear strtab : elem->content : %p, elem->content[0] : %s\n", elem->content, ((char **)(elem->content))[0]);
 		strtab_clear((char ***)&elem->content);
 		ft_free_p((void **)&elem);
 		elem = elem_next;
 	}
-	printf("map clear strtab : enetered and checked. *map : %p\n", *map);
+//	printf("map clear strtab : enetered and checked. *map : %p\n", *map);
 	*map = NULL;
 	return (0);
 }
@@ -47,9 +47,9 @@ static t_mtx	*convert_map_lst_to_mtx(t_fmap *fmap, int width, int height, t_lst 
 	t_lst	*row;
 	float	*data;
 
-	printf("map loader convert : entered. <width x height> : <%d x %d>\n", width, height);
+//	printf("map loader convert : entered. <width x height> : <%d x %d>\n", width, height);
 	fmap->coords = mtx_create_empty(width * height, 4, DTYPE_F);
-	printf("map loader convert : coords mtx created %p\n", fmap->coords);
+//	printf("map loader convert : coords mtx created %p\n", fmap->coords);
 	if (!fmap->coords)
 		return (NULL);
 	row = map_lst;
@@ -107,11 +107,11 @@ static int	gather_map_lines(int fd, t_lst **map_lst)
 	t_lst	*elem;
 	char	*new_line;
 	
-	printf("gather_map_lines starts : fd %d, map_list ptr %p\n", fd, map_lst);
+//	printf("gather_map_lines starts : fd %d, map_list ptr %p\n", fd, map_lst);
 	new_line = get_next_line(fd);
 	while (new_line)
 	{
-		printf(" - %s", new_line);
+//		printf(" - %s", new_line);
 		elem = ft_lstnew(new_line);
 		if (!elem)
 			return (ft_free_p((void **)&new_line) - 1);
@@ -128,36 +128,36 @@ int	fdf_load_map(char *map_name, t_fmap *fmap)
 	int		w;
 	int		h;
 
-	printf("load_map : entered. map_name : %s, fmap ptr : %p\n", map_name, fmap);
+//	printf("load_map : entered. map_name : %s, fmap ptr : %p\n", map_name, fmap);
 	if (!map_name || !fmap)
 		return (-1);
-	printf("load_map : checks passed\n");
+//	printf("load_map : checks passed\n");
 	map_lst = NULL;
-	printf("opening map_name : %s\n", map_name);
+//	printf("opening map_name : %s\n", map_name);
 	fd = open(map_name, O_RDONLY);
 	if (fd < 0)
 	{
 		printf("load_map : file open failed\n");
 		return (-1);
 	}
-	printf("map loader : gathering map\n");
+//	printf("map loader : gathering map\n");
 	if (gather_map_lines(fd, &map_lst) < 0)
 		return (map_clear_str(&map_lst) - 1);
 	close(fd);
-	printf("map loader : split validate\n");
+//	printf("map loader : split validate\n");
 	w = split_validate(map_lst);
 	if (w < 0)
 		return (map_clear_strtab(&map_lst) - 1);
 	h = ft_lstsize(map_lst);
-	printf("map loader : fmap init. <w x h> : <%d x %d>\n", w, h);
+//	printf("map loader : fmap init. <w x h> : <%d x %d>\n", w, h);
 	fmap_init(fmap, w, h);
-	printf("map loader : fmap init DONE\n");
+//	printf("map loader : fmap init DONE\n");
 	if (!convert_map_lst_to_mtx(fmap, w, h, map_lst))
 		return (map_clear_strtab(&map_lst) - 1);
-	printf("map loader : about to copy coords\n");
+//	printf("map loader : about to copy coords\n");
 	fmap->screen_coords = mtx_copy(fmap->coords);
 	mtx_select_col(fmap->screen_coords, 3, fmap->homogenious_vect);
-	printf("map loader : homogenious coords : \n");
+//	printf("map loader : homogenious coords : \n");
 //	mtx_print(fmap->homogenious_vect);
 	mtx_transpose(fmap->homogenious_vect);
 	return (map_clear_strtab(&map_lst));

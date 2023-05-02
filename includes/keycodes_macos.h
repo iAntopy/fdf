@@ -6,7 +6,7 @@
 /*   By: iamongeo <marvin@42quebec.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 19:07:16 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/28 19:40:38 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 20:53:24 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ enum e_duplicates{
   KC_f                    = 0x03,
   KC_h                    = 0x04,
   KC_g                    = 0x05,
-  KC_z                    = 0x06,
+  C_z                    = 0x06,
   KC_x                    = 0x07,
   KC_c                    = 0x08,
   KC_v                    = 0x09,
@@ -134,10 +134,10 @@ enum {
   KC_Backspace                 = 0x33,
   KC_Escape                    = 0x35,
   KC_Command                   = 0x37,
-  KC_Shift_L                   = 0x38,
+  KC_Shift_L                   = 0x100,//0x38,
   KC_CapsLock                  = 0x39,
   KC_Option                    = 0x3A,
-  KC_Control                   = 0x3B,
+  KC_Control_L                 = 0x101,// 0x3B,
   KC_Shift_R                   = 0x3C,
   KC_Option_R                  = 0x3D,
   KC_Control_R                 = 0x3E,

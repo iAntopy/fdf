@@ -6,7 +6,7 @@
 /*   By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 17:08:15 by iamongeo          #+#    #+#             */
-/*   Updated: 2022/11/30 17:53:36 by iamongeo         ###   ########.fr       */
+/*   Updated: 2023/05/01 22:06:31 by iamongeo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static void	mouse_cam_rotate(t_fdf *fdf, int dx, int dy)
 //	printf("mouse cam rotate : dx, dy = (%d, %d)\n", dx, dy);
 //	printf("mouse cam rotate : y theta (dx / (asp * fov)), x theta (dy / fov) = (%f, %f)\n", (float)dx / (fdf->cam1.aspect_ratio * fdf->cam1.fov), (float)dy / fdf->cam1.fov);
 
-	camo_rotate(&fdf->cam1, -redux * (float)dy / fdf->cam1.fov,
-		redux * (float)dx / (fdf->cam1.aspect_ratio * fdf->cam1.fov), 0);
+	camo_rotate(&fdf->cam1, redux * (float)dy / fdf->cam1.fov,
+		-redux * (float)dx / (fdf->cam1.aspect_ratio * fdf->cam1.fov), 0);
 }
 
 int	on_mouse_press(int button, int x, int y, void *fdf_p)
@@ -33,6 +33,10 @@ int	on_mouse_press(int button, int x, int y, void *fdf_p)
 		fdf->last_mouse_coord[1] = y;
 		fdf->is_mouse_pressed = 1;
 	}
+	else if (button == 4)
+		ft_printf("mouse button 4 pressed");
+	else if (button == 5)
+		ft_printf("mouse button 5 pressed");
 	return (0);
 }
 
