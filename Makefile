@@ -6,7 +6,7 @@
 #    By: iamongeo <iamongeo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/01 15:23:45 by iamongeo          #+#    #+#              #
-#    Updated: 2023/05/01 16:15:46 by iamongeo         ###   ########.fr        #
+#    Updated: 2023/05/02 01:22:34 by iamongeo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,15 +72,17 @@ fclean:	clean
 
 $(SUBMODULES):
 	git submodule init
-	git submodule update
+	git submodule update --remote --merge
 
 $(LIBFT):
 	make -C libft/
 	make -C libft/ bonus
 $(LIBMTX):
 	make -C mtxlib/
+
 $(LIBMLX): $(SUBMODULES)
 	@make -C $(MINILIBX_PATH)
+
 $(LIBMLXADDS):
 	make -C mlx_addons/
 
